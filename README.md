@@ -27,7 +27,11 @@ MacUserGenerator (MUG) is written from the ground up, with ideas ***heavily*** i
     *   Package is payload free, it uses the script export mentioned above as a postinstall script within the package.
     *   Package will be signed with a [Developer ID Installer Certificate](https://developer.apple.com/developer-id/) (if selected) during export.
     *   Exports should work with targeted volumes (used in imaging workflows ie. [AutoDMG](https://github.com/MagerValp/AutoDMG)).
-    *   ![Export](Readme%20Resources/Export.png)
+
+![Export](Readme%20Resources/Export.png)
+
+## Coming soon
+*   [ ]   User account pictures are currently not being applied.
 
 ## Things I would love some help with
 *   [ ]   A proper app icon. It's horrible.
