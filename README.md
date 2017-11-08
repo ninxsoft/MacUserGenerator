@@ -41,7 +41,7 @@ MacUserGenerator (MUG) is written from the ground up, with ideas ***heavily*** i
 ## Requirements
 *   Written in Swift 4.0.
 *   Built using Xcode 9.1.
-*   Build run on OS X El Capitan 10.11 or later.
+*   Builds run on OS X El Capitan 10.11 or later.
 *   Exports tested on macOS Sierra 10.12 and later.
 
 ## Download
