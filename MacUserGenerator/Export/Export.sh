@@ -36,6 +36,11 @@ defaults write "$plist" uid '<array><string>'"$uid"'</string></array>'
 defaults write "$plist" ShadowHashData '<array><data>'"$hash"'</data></array>'
 mkdir -p "$target$home"/Library/Preferences
 
+###ADMINISTRATOR###
+# Make user account Admin
+/usr/sbin/dseditgroup -o edit -t user -a "$userName" admin
+###ADMINISTRATOR###
+
 ###HIDEUSERACCOUNT###
 # hide user account
 defaults write "$plist" IsHidden '<array><string>YES</string></array>'
