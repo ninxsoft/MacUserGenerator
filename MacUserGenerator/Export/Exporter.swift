@@ -24,8 +24,8 @@ class Exporter: NSObject {
     
     do {
       var script = try String(contentsOf: scriptURL!)
-      script = script.replaceFirstOccurrence(of: "#USERNAME#", with: documentObject.accountName)
-      script = script.replaceFirstOccurrence(of: "#FULLNAME#", with: documentObject.fullName)
+      script = script.replaceFirstOccurrence(of: "#NAME#", with: documentObject.accountName)
+      script = script.replaceFirstOccurrence(of: "#REALNAME#", with: documentObject.fullName)
       script = script.replaceFirstOccurrence(of: "#UID#", with: documentObject.userID)
       script = script.replaceFirstOccurrence(of: "#SHELL#", with: documentObject.loginShell.rawValue)
       script = script.replaceFirstOccurrence(of: "#HINT#", with: documentObject.passwordHint)
@@ -37,67 +37,75 @@ class Exporter: NSObject {
         script = script.replaceFirstOccurrence(of: "#HOME#", with: documentObject.homeDirectory)
       }
       
-      script = script.replaceFirstOccurrence(of: "#HASH#", with: documentObject.password.shadowHash)
+      script = script.replaceFirstOccurrence(of: "#SHADOWHASH#", with: documentObject.password.shadowHash)
       
       if documentObject.accountType == .Administrator {
-        script = script.replacingOccurrences(of: "###ADMINISTRATOR###", with: "")
+        script = script.replacingOccurrences(of: "###SETADMINISTRATOR###", with: "")
       }
       else {
-        script = script.replacePatternMatches(of: "###ADMINISTRATOR###[\\s\\S]*###ADMINISTRATOR###", with: "")
+        script = script.replacePatternMatches(of: "###SETADMINISTRATOR###[\\s\\S]*###SETADMINISTRATOR###\\s", with: "")
       }
       
       if documentObject.hideUserAccount {
-        script = script.replacingOccurrences(of: "###HIDEUSERACCOUNT###\n", with: "")
+        script = script.replacingOccurrences(of: "###HIDEUSERACCOUNT###", with: "")
       }
       else {
-        script = script.replacePatternMatches(of: "\\s###HIDEUSERACCOUNT###[\\s\\S]*###HIDEUSERACCOUNT###\\s", with: "")
+        script = script.replacePatternMatches(of: "###HIDEUSERACCOUNT###[\\s\\S]*###HIDEUSERACCOUNT###\\s", with: "")
       }
       
       if documentObject.loginAutomatically {
-        script = script.replacingOccurrences(of: "###LOGINAUTOMATICALLY###\n", with: "")
+        script = script.replacingOccurrences(of: "###SETAUTOLOGIN###", with: "")
         script = script.replaceFirstOccurrence(of: "#KCPASSWORDSTRING#", with: documentObject.password.kcpassword)
       }
       else {
-        script = script.replacePatternMatches(of: "\\s###LOGINAUTOMATICALLY###[\\s\\S]*###LOGINAUTOMATICALLY###\\s", with: "")
+        script = script.replacePatternMatches(of: "###SETAUTOLOGIN###[\\s\\S]*###SETAUTOLOGIN###\\s", with: "")
       }
       
       if documentObject.skipSetupAssistant {
-        script = script.replacingOccurrences(of: "###SKIPSETUPASSISTANT###\n", with: "")
+        script = script.replacingOccurrences(of: "###SKIPSETUPASSISTANT###", with: "")
         
         if documentObject.skipiCloud {
-          script = script.replacingOccurrences(of: "###SKIPICLOUD###\n", with: "")
+          script = script.replacingOccurrences(of: "###SKIPICLOUD###", with: "")
         }
         else {
-          script = script.replacePatternMatches(of: "\\s###SKIPICLOUD[\\s\\S]*###SKIPICLOUD###\\s", with: "")
+          script = script.replacePatternMatches(of: "###SKIPICLOUD[\\s\\S]*###SKIPICLOUD###\\s", with: "")
         }
         
         if documentObject.skipSiri {
-          script = script.replacingOccurrences(of: "###SKIPSIRI###\n", with: "")
+          script = script.replacingOccurrences(of: "###SKIPSIRI###", with: "")
         }
         else {
-          script = script.replacePatternMatches(of: "\\s###SKIPSIRI###[\\s\\S]*###SKIPSIRI###\\s", with: "")
+          script = script.replacePatternMatches(of: "###SKIPSIRI###[\\s\\S]*###SKIPSIRI###\\s", with: "")
         }
         
         if documentObject.skipTouchID {
-          script = script.replacingOccurrences(of: "###SKIPTOUCHID###\n", with: "")
+          script = script.replacingOccurrences(of: "###SKIPTOUCHID###", with: "")
         }
         else {
-          script = script.replacePatternMatches(of: "\\s###SKIPTOUCHID###[\\s\\S]*###SKIPTOUCHID###\\s", with: "")
+          script = script.replacePatternMatches(of: "###SKIPTOUCHID###[\\s\\S]*###SKIPTOUCHID###\\s", with: "")
         }
         
         if documentObject.skipAnalytics {
-          script = script.replacingOccurrences(of: "###SKIPANALYTICS###\n", with: "")
+          script = script.replacingOccurrences(of: "###SKIPANALYTICS###", with: "")
         }
         else {
-          script = script.replacePatternMatches(of: "\\s###SKIPANALYTICS###[\\s\\S]*###SKIPANALYTICS###\\s", with: "")
+          script = script.replacePatternMatches(of: "###SKIPANALYTICS###[\\s\\S]*###SKIPANALYTICS###\\s", with: "")
+        }
+        
+        if documentObject.skipDataPrivacy {
+          script = script.replacingOccurrences(of: "###SKIPDATAPRIVACY###", with: "")
+        }
+        else {
+          script = script.replacePatternMatches(of: "###SKIPDATAPRIVACY###[\\s\\S]*###SKIPDATAPRIVACY###\\s", with: "")
         }
       }
       else {
-        script = script.replacePatternMatches(of: "\\s###SKIPSETUPASSISTANT###[\\s\\S]*###SKIPSETUPASSISTANT###\\s", with: "")
-        script = script.replacePatternMatches(of: "\\s###SKIPICLOUD###[\\s\\S]*###SKIPICLOUD###\\s", with: "")
-        script = script.replacePatternMatches(of: "\\s###SKIPSIRI###[\\s\\S]*###SKIPSIRI###\\s", with: "")
-        script = script.replacePatternMatches(of: "\\s###SKIPTOUCHID###[\\s\\S]*###SKIPTOUCHID###\\s", with: "")
-        script = script.replacePatternMatches(of: "\\s###SKIPANALYTICS###[\\s\\S]*###SKIPANALYTICS###\\s", with: "")
+        script = script.replacePatternMatches(of: "###SKIPSETUPASSISTANT###[\\s\\S]*###SKIPSETUPASSISTANT###\\s", with: "")
+        script = script.replacePatternMatches(of: "###SKIPICLOUD###[\\s\\S]*###SKIPICLOUD###\\s", with: "")
+        script = script.replacePatternMatches(of: "###SKIPSIRI###[\\s\\S]*###SKIPSIRI###\\s", with: "")
+        script = script.replacePatternMatches(of: "###SKIPTOUCHID###[\\s\\S]*###SKIPTOUCHID###\\s", with: "")
+        script = script.replacePatternMatches(of: "###SKIPANALYTICS###[\\s\\S]*###SKIPANALYTICS###\\s", with: "")
+        script = script.replacePatternMatches(of: "###SKIPDATAPRIVACY###[\\s\\S]*###SKIPDATAPRIVACY###\\s", with: "")
       }
       
       // do the picture base64 string last, as it's hella long and stuffs up the regex matching range
