@@ -1,6 +1,6 @@
 //
-//  macOSUserGenerator-Bridging-Header.h
-//  macOSUserGenerator
+//  MacUserGenerator-Bridging-Header.h
+//  MacUserGenerator
 //
 //  Created by Nindi Gill on 30/10/17.
 //  Copyright © 2017 Nindi Gill. All rights reserved.

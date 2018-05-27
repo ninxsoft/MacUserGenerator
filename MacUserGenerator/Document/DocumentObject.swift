@@ -1,6 +1,6 @@
 //
 //  DocumentObject.swift
-//  macOSUserGenerator
+//  MacUserGenerator
 //
 //  Created by Nindi Gill on 11/10/17.
 //  Copyright © 2017 Nindi Gill. All rights reserved.
