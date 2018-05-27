@@ -19,6 +19,8 @@ class DocumentObject: NSObject {
     case Verify
     case PasswordHint
     case UserID
+    case GroupID
+    case GeneratedUID
     case LoginShell
     case HomeDirectory
     case HideUserAccount
@@ -54,6 +56,8 @@ class DocumentObject: NSObject {
   var verify = ""
   var passwordHint = ""
   var userID = ""
+  var groupID = "20"
+  var generatedUID = NSUUID().uuidString
   var loginShell = LoginShell.bash
   var homeDirectory = ""
   var hideUserAccount = false
@@ -96,6 +100,10 @@ class DocumentObject: NSObject {
     
     if let string = dictionary[Key.UserID.rawValue] as? String {
       userID = string
+    }
+    
+    if let string = dictionary[Key.GroupID.rawValue] as? String {
+      groupID = string
     }
     
     if let string = dictionary[Key.LoginShell.rawValue] as? String,
@@ -155,6 +163,7 @@ class DocumentObject: NSObject {
     dictionary[Key.Picture.rawValue] = picture.isValid ? picture.tiffRepresentation : nil
     dictionary[Key.PasswordHint.rawValue] = passwordHint
     dictionary[Key.UserID.rawValue] = userID
+    dictionary[Key.GroupID.rawValue] = groupID
     dictionary[Key.LoginShell.rawValue] = loginShell.rawValue
     dictionary[Key.HomeDirectory.rawValue] = homeDirectory
     dictionary[Key.HideUserAccount.rawValue] = hideUserAccount
