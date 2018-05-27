@@ -107,7 +107,7 @@ hideUserAccount() {
   local name="$2"
   local userPlist="$target/private/var/db/dslocal/nodes/Default/users/$name.plist"
 
-  PlistBuddyAddKey "$userPlist" "IsHidden" "bool" "YES"
+  PlistBuddyAddKey "$userPlist" "IsHidden" "string" "YES"
 }
 
 setAutoLogin() {
