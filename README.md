@@ -13,10 +13,11 @@ MacUserGenerator (MUG) is written from the ground up, with ideas ***heavily*** i
         *   User home folder can also be hidden.
     *   User can be set to login automatically.
     *   User can skip the Setup Assistant on first login.
-        *   User can also skip iCloud setup.
-        *   User can also skip Siri setup.
-        *   User can also skip Touch ID setup.
-        *   User can also skip Analytics setup.
+        *   User can also skip the iCloud setup screen.
+        *   User can also skip the Siri setup screen.
+        *   User can also skip the Touch ID setup screen.
+        *   User can also skip the Analytics screen.
+        *   User can also skip the Data & Privacy screen.
 
 ## Under the hood (the nerdy stuff)
 *   Export a user account as a **Shell script (sh):**
@@ -30,17 +31,14 @@ MacUserGenerator (MUG) is written from the ground up, with ideas ***heavily*** i
 
 ![Export](Readme%20Resources/Export.png)
 
-## Coming soon
-*   [ ]   User account pictures are currently not being applied.
-
 ## Things I would love some help with
 *   [ ]   A proper app icon. It's horrible.
 *   [ ]   Maybe a better app name? **MacUserGenerator (MUG)** is a play on words on **CreateUserPkg (CUP)**. Open to alternatives 😀.
 *   [ ]   Ability for the user account to be allowed to unlock FileVault (FDE).
 
 ## Requirements
-*   Written in Swift 4.0.
-*   Built using Xcode 9.1.
+*   Written in Swift 4.3.
+*   Built using Xcode 9.3.
 *   Builds run on OS X El Capitan 10.11 or later.
 *   Exports tested on macOS Sierra 10.12 and later.
 
@@ -53,8 +51,15 @@ Grab the latest version of MacUserGenerator from the [releases page](https://git
 *   Marcus Ransom ([@marcusransom](https://twitter.com/marcusransom)) for his advice and help with testing.
 
 ## Version History
+*   0.2
+    *   Selecting Administrator for **Account Type** should now work correctly
+    *   Added option to skip the **Data & Privacy** screen
+    *   Photo support
+    *   Rewrote the export script:
+        *   No longer uses `defaults write`
+        *   Uses `PlistBuddy` instead
 *   0.1
-    *   Initial release.
+    *   Initial release
 
 ## License
     Copyright © 2017 Nindi Gill
