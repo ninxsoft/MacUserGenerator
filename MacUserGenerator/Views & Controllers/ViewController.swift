@@ -33,6 +33,7 @@ class ViewController: NSViewController {
   @IBOutlet var skipSiriCheckbox: NSButton?
   @IBOutlet var skipTouchIDCheckbox: NSButton?
   @IBOutlet var skipAnalyticsCheckbox: NSButton?
+  @IBOutlet var skipDataPrivacyCheckbox: NSButton?
   @IBOutlet var fileVaultUnlockCheckbox: NSButton?
   @IBOutlet var exportButton: NSButton?
   @IBOutlet var helpButton: NSButton?
@@ -62,6 +63,8 @@ class ViewController: NSViewController {
     skipTouchIDCheckbox?.isEnabled = documentObject.skipSetupAssistant
     skipAnalyticsCheckbox?.state = documentObject.skipAnalytics ? .on : .off
     skipAnalyticsCheckbox?.isEnabled = documentObject.skipSetupAssistant
+    skipDataPrivacyCheckbox?.state = documentObject.skipDataPrivacy ? .on : .off
+    skipDataPrivacyCheckbox?.isEnabled = documentObject.skipSetupAssistant
     
     validateExportButton()
   }
@@ -328,6 +331,8 @@ class ViewController: NSViewController {
       skipTouchIDCheckbox?.isEnabled = skipSetupAssistantCheckbox?.state == .on
       skipAnalyticsCheckbox?.state = selected ? .on : .off
       skipAnalyticsCheckbox?.isEnabled = skipSetupAssistantCheckbox?.state == .on
+      skipDataPrivacyCheckbox?.state = selected ? .on : .off
+      skipDataPrivacyCheckbox?.isEnabled = skipSetupAssistantCheckbox?.state == .on
       return
     }
 
@@ -347,6 +352,7 @@ class ViewController: NSViewController {
       skipSiriCheckbox?.isEnabled = selected
       skipTouchIDCheckbox?.isEnabled = selected
       skipAnalyticsCheckbox?.isEnabled = selected
+      skipDataPrivacyCheckbox?.isEnabled = selected
     }
     else if sender == skipiCloudCheckbox {
       documentObject.skipiCloud = selected
@@ -359,6 +365,9 @@ class ViewController: NSViewController {
     }
     else if sender == skipAnalyticsCheckbox {
       documentObject.skipAnalytics = selected
+    }
+    else if sender == skipDataPrivacyCheckbox {
+      documentObject.skipDataPrivacy = selected
     }
 
     documentHasBeenEdited()

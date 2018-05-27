@@ -29,6 +29,7 @@ class DocumentObject: NSObject {
     case SkipSiri
     case SkipTouchID
     case SkipAnalytics
+    case SkipDataPrivacy
   }
   
   enum AccountType: String {
@@ -63,6 +64,7 @@ class DocumentObject: NSObject {
   var skipSiri = false
   var skipTouchID = false
   var skipAnalytics = false
+  var skipDataPrivacy = false
   
   convenience init(dictionary: NSDictionary) {
     self.init()
@@ -136,6 +138,10 @@ class DocumentObject: NSObject {
     if let boolean = dictionary[Key.SkipAnalytics.rawValue] as? Bool {
       skipAnalytics = boolean
     }
+    
+    if let boolean = dictionary[Key.SkipDataPrivacy.rawValue] as? Bool {
+      skipDataPrivacy = boolean
+    }
   }
   
   /**
@@ -159,6 +165,7 @@ class DocumentObject: NSObject {
     dictionary[Key.SkipSiri.rawValue] = skipSiri
     dictionary[Key.SkipTouchID.rawValue] = skipTouchID
     dictionary[Key.SkipAnalytics.rawValue] = skipAnalytics
+    dictionary[Key.SkipDataPrivacy.rawValue] = skipDataPrivacy
     return dictionary
   }
 }
