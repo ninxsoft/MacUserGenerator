@@ -10,7 +10,8 @@ import Cocoa
 
 class ViewController: NSViewController {
 
-  @IBOutlet var accountTypePopButton: NSPopUpButton?
+  @IBOutlet var administratorButton: NSButton?
+  @IBOutlet var standardButton: NSButton?
   @IBOutlet var fullNameTextField: NSTextField?
   @IBOutlet var accountNameTextField: NSTextField?
   @IBOutlet var accountNameImageView: NSImageView?
@@ -40,7 +41,9 @@ class ViewController: NSViewController {
   var documentObject = DocumentObject()
   
   override func viewDidAppear() {
-    accountTypePopButton?.selectItem(withTitle: documentObject.accountType.rawValue)
+    
+    administratorButton?.state = documentObject.accountType == .Administrator ? .on : .off
+    standardButton?.state = documentObject.accountType == .Standard ? .on : .off
     fullNameTextField?.stringValue = documentObject.fullName
     accountNameTextField?.stringValue = documentObject.accountName
     pictureView?.imageLayer.contents = documentObject.picture
@@ -174,11 +177,7 @@ class ViewController: NSViewController {
       return
     }
     
-    if sender == accountTypePopButton,
-      let type = DocumentObject.AccountType(rawValue: string) {
-      documentObject.accountType = type
-    }
-    else if sender == loginShellPopupButton,
+    if sender == loginShellPopupButton,
       let shell = DocumentObject.LoginShell(rawValue: string) {
       documentObject.loginShell = shell
     }
@@ -194,7 +193,15 @@ class ViewController: NSViewController {
   */
   @IBAction func buttonClicked(sender: NSButton) {
     
-    if sender == homeDirectorySelectButton {
+    if sender == administratorButton {
+      documentObject.accountType = .Administrator
+      standardButton?.state = .off
+    }
+    else if sender == standardButton {
+      documentObject.accountType = .Standard
+      administratorButton?.state = .off
+    }
+    else if sender == homeDirectorySelectButton {
       showHomeDirectoryOpenPanel()
     }
     else if sender == exportButton {
