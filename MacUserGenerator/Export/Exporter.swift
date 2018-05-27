@@ -114,17 +114,34 @@ class Exporter: NSObject {
       if documentObject.picture.isValid  {
 
         if let tiff = documentObject.picture.tiffRepresentation {
-          let string = tiff.base64EncodedString(options: .lineLength64Characters)
-          // script = script.replaceFirstOccurrence(of: "#PICTURE#", with: string)
-          // currently commented out, need to test
-          script = script.replaceFirstOccurrence(of: "#PICTURE#", with: "")
+          let string = tiff.base64EncodedString()
+          
+          var firstString = ""
+          var secondString = ""
+          var thirdString = ""
+          let third = string.count / 3
+
+          let index = string.index(string.startIndex, offsetBy: third)
+          firstString = String(string[..<index])
+          let startIndex = string.index(string.startIndex, offsetBy: third)
+          let endIndex = string.index(startIndex, offsetBy: third)
+          secondString = String(string[startIndex..<endIndex])
+          thirdString = String(string[endIndex..<string.endIndex])
+
+          script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: firstString)
+          script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: secondString)
+          script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: thirdString)
         }
         else {
-          script = script.replaceFirstOccurrence(of: "#PICTURE#", with: "")
+          script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: "")
+          script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: "")
+          script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: "")
         }
       }
       else {
-        script = script.replaceFirstOccurrence(of: "#PICTURE#", with: "")
+        script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: "")
+        script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: "")
+        script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: "")
       }
     
       try script.write(to: url, atomically: true, encoding: .utf8)
