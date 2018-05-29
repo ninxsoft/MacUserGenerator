@@ -22,7 +22,11 @@ class ViewController: NSViewController {
   @IBOutlet var passwordHintTextField: NSTextField?
   @IBOutlet var userIDTextField: NSTextField?
   @IBOutlet var userIDImageView: NSImageView?
-  @IBOutlet var loginShellPopupButton: NSPopUpButton?
+  @IBOutlet var bashButton: NSButton?
+  @IBOutlet var tcshButton: NSButton?
+  @IBOutlet var shButton: NSButton?
+  @IBOutlet var cshButton: NSButton?
+  @IBOutlet var zshButton: NSButton?
   @IBOutlet var homeDirectoryTextField: NSTextField?
   @IBOutlet var homeDirectoryImageView: NSImageView?
   @IBOutlet var homeDirectorySelectButton: NSButton?
@@ -51,7 +55,11 @@ class ViewController: NSViewController {
     verifySecureTextField?.stringValue = documentObject.verify
     passwordHintTextField?.stringValue = documentObject.passwordHint
     userIDTextField?.stringValue = documentObject.userID
-    loginShellPopupButton?.selectItem(withTitle: documentObject.loginShell.rawValue)
+    bashButton?.state = documentObject.loginShell == .bash ? .on : .off
+    tcshButton?.state = documentObject.loginShell == .tcsh ? .on : .off
+    shButton?.state = documentObject.loginShell == .sh ? .on : .off
+    cshButton?.state = documentObject.loginShell == .csh ? .on : .off
+    zshButton?.state = documentObject.loginShell == .zsh ? .on : .off
     homeDirectoryTextField?.stringValue = documentObject.homeDirectory
     hideUserAccountCheckbox?.state = documentObject.hideUserAccount ? .on : .off
     hideHomeDirectoryCheckbox?.state = documentObject.hideHomeDirectory ? .on : .off
@@ -167,26 +175,6 @@ class ViewController: NSViewController {
   }
   
   /**
-   Selects the popup button that was clicked, allowing for selection of an available value.
-   - Parameters:
-     - sender: The NSPopUpButton that was clicked.
-  */
-  @IBAction func popupButtonSelected(sender: NSPopUpButton) {
-    
-    guard let string = sender.titleOfSelectedItem else {
-      return
-    }
-    
-    if sender == loginShellPopupButton,
-      let shell = DocumentObject.LoginShell(rawValue: string) {
-      documentObject.loginShell = shell
-    }
-    
-    documentHasBeenEdited()
-    validateExportButton()
-  }
-  
-  /**
    Invokes the action associated with the button that was clicked.
    - Parameters:
      - sender: The NSButton that was clicked.
@@ -195,19 +183,48 @@ class ViewController: NSViewController {
     
     if sender == administratorButton {
       documentObject.accountType = .Administrator
-      standardButton?.state = .off
+      documentHasBeenEdited()
     }
-    else if sender == standardButton {
+    
+    if sender == standardButton {
       documentObject.accountType = .Standard
-      administratorButton?.state = .off
+      documentHasBeenEdited()
     }
-    else if sender == homeDirectorySelectButton {
+
+    if sender == bashButton {
+      documentObject.loginShell = .bash
+      documentHasBeenEdited()
+    }
+    
+    if sender == tcshButton {
+      documentObject.loginShell = .tcsh
+      documentHasBeenEdited()
+    }
+    
+    if sender == shButton {
+      documentObject.loginShell = .sh
+      documentHasBeenEdited()
+    }
+    
+    if sender == cshButton {
+      documentObject.loginShell = .csh
+      documentHasBeenEdited()
+    }
+    
+    if sender == zshButton {
+      documentObject.loginShell = .zsh
+      documentHasBeenEdited()
+    }
+    
+    if sender == homeDirectorySelectButton {
       showHomeDirectoryOpenPanel()
     }
-    else if sender == exportButton {
+    
+    if sender == exportButton {
       showExportWindow()
     }
-    else if sender == helpButton {
+    
+    if sender == helpButton {
       showHelp()
     }
   }

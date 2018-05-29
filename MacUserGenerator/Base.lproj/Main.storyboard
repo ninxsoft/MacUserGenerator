@@ -897,25 +897,6 @@
                                     <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="Qt8-c7-iP3"/>
                                 </connections>
                             </button>
-                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XPZ-BX-qlC">
-                                <rect key="frame" x="137" y="352" width="94" height="26"/>
-                                <popUpButtonCell key="cell" type="push" title="/bin/bash" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="6YG-gV-Nm9" id="1sp-MA-SVV">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="menu"/>
-                                    <menu key="menu" id="b3O-Lx-7jm">
-                                        <items>
-                                            <menuItem title="/bin/bash" state="on" id="6YG-gV-Nm9"/>
-                                            <menuItem title="/bin/tcsh" id="nlD-U9-yQV"/>
-                                            <menuItem title="/bin/sh" id="EQb-gH-NNV"/>
-                                            <menuItem title="/bin/csh" id="QIn-xC-E6r"/>
-                                            <menuItem title="/bin/zsh" id="Nf1-0Q-2yF"/>
-                                        </items>
-                                    </menu>
-                                </popUpButtonCell>
-                                <connections>
-                                    <action selector="popupButtonSelectedWithSender:" target="5gI-5U-AMq" id="JM3-4v-xyf"/>
-                                </connections>
-                            </popUpButton>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MxT-SB-6bj">
                                 <rect key="frame" x="139" y="318" width="223" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="/Users/test" placeholderString="/Users/test" drawsBackground="YES" id="FfM-7N-zLV">
@@ -1091,26 +1072,108 @@
                                     <action selector="checkBoxSelectedWithSender:" target="5gI-5U-AMq" id="xd0-yB-shX"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UnZ-fm-KeD">
-                                <rect key="frame" x="138" y="616" width="104" height="18"/>
-                                <buttonCell key="cell" type="radio" title="Administrator" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="aXK-g9-ccK">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="csQ-qe-zqu"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sCu-UN-xcf">
-                                <rect key="frame" x="249" y="616" width="78" height="18"/>
-                                <buttonCell key="cell" type="radio" title="Standard" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="NGb-yn-zCR">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="CcN-eV-m1x"/>
-                                </connections>
-                            </button>
+                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kWc-Ce-K0c">
+                                <rect key="frame" x="139" y="358" width="251" height="16"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uen-6H-Fc7">
+                                        <rect key="frame" x="-1" y="-1" width="52" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="bash" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="tpK-GF-LQB">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="gdc-Pk-wdt"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6KU-JM-p70">
+                                        <rect key="frame" x="58" y="-1" width="49" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="tcsh" bezelStyle="regularSquare" imagePosition="left" inset="2" id="bPT-st-uBa">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="MVz-C7-KNv"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zZx-LT-6Qa">
+                                        <rect key="frame" x="114" y="-1" width="37" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="sh" bezelStyle="regularSquare" imagePosition="left" inset="2" id="y2l-ag-hiX">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="P1G-7M-GeD"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="b4Q-Z0-MfC">
+                                        <rect key="frame" x="158" y="-1" width="44" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="csh" bezelStyle="regularSquare" imagePosition="left" inset="2" id="CLQ-cU-fYP">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="Mwu-Np-fFM"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yAf-Kh-v2z">
+                                        <rect key="frame" x="209" y="-1" width="44" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="zsh" bezelStyle="regularSquare" imagePosition="left" inset="2" id="SPK-uC-3mr">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="TID-Qh-WkN"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vEg-jB-NKg">
+                                <rect key="frame" x="139" y="617" width="186" height="16"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UnZ-fm-KeD">
+                                        <rect key="frame" x="-1" y="-1" width="104" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="Administrator" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="aXK-g9-ccK">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="Jnc-lB-qzU"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sCu-UN-xcf">
+                                        <rect key="frame" x="110" y="-1" width="78" height="18"/>
+                                        <buttonCell key="cell" type="radio" title="Standard" bezelStyle="regularSquare" imagePosition="left" inset="2" id="NGb-yn-zCR">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="buttonClickedWithSender:" target="5gI-5U-AMq" id="X9u-we-kbW"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="D5Z-BS-nzu" firstAttribute="trailing" secondItem="yQg-GX-1pd" secondAttribute="trailing" multiplier="0.6" id="01I-yx-Ni6"/>
@@ -1119,15 +1182,12 @@
                             <constraint firstItem="eTG-ed-e5a" firstAttribute="centerY" secondItem="D5Z-BS-nzu" secondAttribute="centerY" id="2Cb-Uc-Bgt"/>
                             <constraint firstItem="UhL-i6-GUC" firstAttribute="centerY" secondItem="MxT-SB-6bj" secondAttribute="centerY" id="2fC-0W-gcl"/>
                             <constraint firstItem="eQc-m1-WEq" firstAttribute="trailing" secondItem="Ty2-gg-gmA" secondAttribute="trailing" id="2mm-gL-DRL"/>
-                            <constraint firstItem="UnZ-fm-KeD" firstAttribute="baseline" secondItem="H2c-YT-oAQ" secondAttribute="baseline" id="3Ej-yq-x1w"/>
+                            <constraint firstItem="vEg-jB-NKg" firstAttribute="baseline" secondItem="H2c-YT-oAQ" secondAttribute="baseline" id="4Nn-7P-65U"/>
                             <constraint firstItem="8GS-UR-QIJ" firstAttribute="centerX" secondItem="ERx-hH-rdd" secondAttribute="centerX" id="4s7-Hu-8aQ"/>
-                            <constraint firstItem="XPZ-BX-qlC" firstAttribute="baseline" secondItem="WUj-xX-rIi" secondAttribute="baseline" id="5Cq-Rt-CMi"/>
                             <constraint firstItem="4Fl-Xc-hLx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ERx-hH-rdd" secondAttribute="leading" constant="20" symbolic="YES" id="5hk-3E-uzf"/>
                             <constraint firstItem="eQc-m1-WEq" firstAttribute="centerY" secondItem="MxT-SB-6bj" secondAttribute="centerY" id="68I-tw-JEV"/>
-                            <constraint firstItem="sCu-UN-xcf" firstAttribute="leading" secondItem="UnZ-fm-KeD" secondAttribute="trailing" constant="10" id="6Kc-kb-gBx"/>
                             <constraint firstItem="NPH-Iu-DBl" firstAttribute="leading" secondItem="vA6-xS-g9g" secondAttribute="trailing" constant="10" id="6NU-ub-kXF"/>
                             <constraint firstItem="9KJ-CW-4fM" firstAttribute="leading" secondItem="Ty2-gg-gmA" secondAttribute="leading" id="6O3-YO-UmR"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="sCu-UN-xcf" secondAttribute="trailing" constant="20" symbolic="YES" id="6eD-58-HKd"/>
                             <constraint firstItem="vca-3B-ATU" firstAttribute="top" secondItem="NPH-Iu-DBl" secondAttribute="bottom" constant="10" id="6ld-vk-uCM"/>
                             <constraint firstItem="Gdl-cy-nc3" firstAttribute="baseline" secondItem="sY5-h9-adM" secondAttribute="baseline" id="9C4-KF-qUC"/>
                             <constraint firstItem="cpA-At-5fj" firstAttribute="trailing" secondItem="vA6-xS-g9g" secondAttribute="trailing" id="Ab4-bI-QW1"/>
@@ -1139,8 +1199,10 @@
                             <constraint firstItem="SCA-aS-kDK" firstAttribute="leading" secondItem="BDn-Ps-xue" secondAttribute="trailing" constant="10" id="Eub-Z7-Om1"/>
                             <constraint firstItem="BDn-Ps-xue" firstAttribute="leading" secondItem="vA6-xS-g9g" secondAttribute="trailing" constant="10" id="FE8-1z-iQG"/>
                             <constraint firstItem="kk5-YK-JZL" firstAttribute="leading" secondItem="vca-3B-ATU" secondAttribute="leading" constant="20" id="FNx-EC-KUm"/>
+                            <constraint firstItem="vEg-jB-NKg" firstAttribute="leading" secondItem="vA6-xS-g9g" secondAttribute="trailing" constant="10" id="FO3-xA-Alw"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kk5-YK-JZL" secondAttribute="trailing" constant="20" symbolic="YES" id="GoV-Ex-Y9L"/>
                             <constraint firstAttribute="bottom" secondItem="8GS-UR-QIJ" secondAttribute="bottom" constant="20" id="I8t-7w-i1n"/>
+                            <constraint firstItem="kWc-Ce-K0c" firstAttribute="leading" secondItem="vA6-xS-g9g" secondAttribute="trailing" constant="10" id="IGN-fT-6Kq"/>
                             <constraint firstItem="g1h-8d-E5j" firstAttribute="trailing" secondItem="Ty2-gg-gmA" secondAttribute="trailing" id="IfF-u0-qHg"/>
                             <constraint firstItem="2W8-uc-RMM" firstAttribute="leading" secondItem="vca-3B-ATU" secondAttribute="leading" constant="20" id="J7U-TO-hYJ"/>
                             <constraint firstItem="9KJ-CW-4fM" firstAttribute="trailing" secondItem="Ty2-gg-gmA" secondAttribute="trailing" id="KLb-7U-5Ai"/>
@@ -1148,7 +1210,6 @@
                             <constraint firstItem="SCA-aS-kDK" firstAttribute="bottom" secondItem="BDn-Ps-xue" secondAttribute="bottom" id="Mez-H8-bEX"/>
                             <constraint firstItem="cpA-At-5fj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ERx-hH-rdd" secondAttribute="leading" constant="20" symbolic="YES" id="MmI-Zv-yu2"/>
                             <constraint firstItem="NW5-oM-OBs" firstAttribute="leading" secondItem="vca-3B-ATU" secondAttribute="leading" constant="20" id="O7o-1d-pXO"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XPZ-BX-qlC" secondAttribute="trailing" constant="20" symbolic="YES" id="PBu-lw-YrN"/>
                             <constraint firstItem="PIe-6w-EEQ" firstAttribute="top" secondItem="gbW-ob-bzr" secondAttribute="bottom" constant="10" id="PI5-zb-xFo"/>
                             <constraint firstItem="D5Z-BS-nzu" firstAttribute="leading" secondItem="vA6-xS-g9g" secondAttribute="trailing" constant="10" id="PtM-Jw-bcC"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2W8-uc-RMM" secondAttribute="trailing" constant="20" symbolic="YES" id="Qk0-M9-buw"/>
@@ -1156,9 +1217,7 @@
                             <constraint firstItem="BDn-Ps-xue" firstAttribute="trailing" secondItem="ptN-zZ-M3k" secondAttribute="trailing" constant="5" id="S3a-Z3-swd"/>
                             <constraint firstItem="Wvy-uu-nsP" firstAttribute="trailing" secondItem="OEM-Fr-ivE" secondAttribute="trailing" constant="5" id="T4V-uT-EmN"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gbW-ob-bzr" secondAttribute="trailing" constant="20" symbolic="YES" id="T89-gv-rZv"/>
-                            <constraint firstItem="XPZ-BX-qlC" firstAttribute="leading" secondItem="vA6-xS-g9g" secondAttribute="trailing" constant="10" id="TcQ-H5-d9R"/>
                             <constraint firstItem="bmv-oa-6AZ" firstAttribute="leading" secondItem="dbz-Xf-84h" secondAttribute="leading" constant="20" id="U9J-Hr-hfU"/>
-                            <constraint firstItem="UnZ-fm-KeD" firstAttribute="leading" secondItem="H2c-YT-oAQ" secondAttribute="trailing" constant="10" id="Vaj-D7-9xX"/>
                             <constraint firstItem="vca-3B-ATU" firstAttribute="leading" secondItem="vA6-xS-g9g" secondAttribute="trailing" constant="10" id="XL6-vR-FOL"/>
                             <constraint firstItem="OEM-Fr-ivE" firstAttribute="centerY" secondItem="Wvy-uu-nsP" secondAttribute="centerY" id="XQB-hf-I8t"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bmv-oa-6AZ" secondAttribute="trailing" constant="20" symbolic="YES" id="XS9-LD-9DO"/>
@@ -1174,7 +1233,6 @@
                             <constraint firstItem="Ty2-gg-gmA" firstAttribute="top" secondItem="vA6-xS-g9g" secondAttribute="bottom" constant="20" id="eoM-Hl-BBu"/>
                             <constraint firstItem="4Fl-Xc-hLx" firstAttribute="trailing" secondItem="Ty2-gg-gmA" secondAttribute="trailing" id="ff7-gk-v8C"/>
                             <constraint firstItem="g1h-8d-E5j" firstAttribute="leading" secondItem="vA6-xS-g9g" secondAttribute="trailing" constant="10" id="gEw-IX-jyG"/>
-                            <constraint firstItem="sCu-UN-xcf" firstAttribute="baseline" secondItem="H2c-YT-oAQ" secondAttribute="baseline" id="gU2-tP-Bul"/>
                             <constraint firstItem="4Fl-Xc-hLx" firstAttribute="centerY" secondItem="8GS-UR-QIJ" secondAttribute="centerY" id="gkf-RF-MLz"/>
                             <constraint firstItem="Gdl-cy-nc3" firstAttribute="trailing" secondItem="Ty2-gg-gmA" secondAttribute="trailing" id="hFb-Lc-9GK"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="PIe-6w-EEQ" secondAttribute="trailing" constant="20" symbolic="YES" id="hdn-Tq-QA1"/>
@@ -1193,6 +1251,7 @@
                             <constraint firstItem="D5Z-BS-nzu" firstAttribute="baseline" secondItem="TAw-O5-KR3" secondAttribute="baseline" id="qWb-FF-APp"/>
                             <constraint firstItem="eQc-m1-WEq" firstAttribute="leading" secondItem="MxT-SB-6bj" secondAttribute="trailing" constant="10" id="qmp-4j-uTN"/>
                             <constraint firstItem="PIe-6w-EEQ" firstAttribute="leading" secondItem="vca-3B-ATU" secondAttribute="leading" constant="20" id="rF4-UZ-Q0a"/>
+                            <constraint firstItem="kWc-Ce-K0c" firstAttribute="baseline" secondItem="WUj-xX-rIi" secondAttribute="baseline" id="sO1-dV-3uM"/>
                             <constraint firstItem="gbW-ob-bzr" firstAttribute="leading" secondItem="vca-3B-ATU" secondAttribute="leading" constant="20" id="stS-tv-4bI"/>
                             <constraint firstItem="ptN-zZ-M3k" firstAttribute="centerY" secondItem="BDn-Ps-xue" secondAttribute="centerY" id="tFx-KF-og3"/>
                             <constraint firstItem="Ty2-gg-gmA" firstAttribute="leading" secondItem="ERx-hH-rdd" secondAttribute="leading" constant="30" id="tku-WU-iuR"/>
@@ -1206,7 +1265,9 @@
                     <connections>
                         <outlet property="accountNameImageView" destination="ptN-zZ-M3k" id="qH6-5e-CMp"/>
                         <outlet property="accountNameTextField" destination="BDn-Ps-xue" id="pdG-Z3-JW1"/>
-                        <outlet property="administratorButton" destination="UnZ-fm-KeD" id="zI5-Ab-1qr"/>
+                        <outlet property="administratorButton" destination="UnZ-fm-KeD" id="I0j-ZH-9zo"/>
+                        <outlet property="bashButton" destination="uen-6H-Fc7" id="ouA-99-8QR"/>
+                        <outlet property="cshButton" destination="b4Q-Z0-MfC" id="8va-w0-Pjq"/>
                         <outlet property="exportButton" destination="8GS-UR-QIJ" id="yT8-en-Jc2"/>
                         <outlet property="fullNameTextField" destination="yQg-GX-1pd" id="Xak-YB-UeR"/>
                         <outlet property="helpButton" destination="4Fl-Xc-hLx" id="Mah-qJ-c7x"/>
@@ -1216,21 +1277,23 @@
                         <outlet property="homeDirectorySelectButton" destination="eQc-m1-WEq" id="EUJ-bH-exY"/>
                         <outlet property="homeDirectoryTextField" destination="MxT-SB-6bj" id="W8d-Fu-Mcx"/>
                         <outlet property="loginAutomaticallyCheckbox" destination="NPH-Iu-DBl" id="fgZ-5b-mOa"/>
-                        <outlet property="loginShellPopupButton" destination="XPZ-BX-qlC" id="HEg-Jx-lrK"/>
                         <outlet property="passwordHintTextField" destination="Gdl-cy-nc3" id="v7l-dt-a5R"/>
                         <outlet property="passwordSecureTextField" destination="g1h-8d-E5j" id="uDH-eC-yga"/>
                         <outlet property="pictureView" destination="SCA-aS-kDK" id="WgI-c0-Cqs"/>
+                        <outlet property="shButton" destination="zZx-LT-6Qa" id="qqs-tk-YE4"/>
                         <outlet property="skipAnalyticsCheckbox" destination="kk5-YK-JZL" id="5Si-Um-F7q"/>
                         <outlet property="skipDataPrivacyCheckbox" destination="NW5-oM-OBs" id="biX-WL-nq0"/>
                         <outlet property="skipSetupAssistantCheckbox" destination="vca-3B-ATU" id="MQD-S9-rsv"/>
                         <outlet property="skipSiriCheckbox" destination="PIe-6w-EEQ" id="kKd-n3-d8D"/>
                         <outlet property="skipTouchIDCheckbox" destination="2W8-uc-RMM" id="DxK-Dg-hQu"/>
                         <outlet property="skipiCloudCheckbox" destination="gbW-ob-bzr" id="5JF-RP-l75"/>
-                        <outlet property="standardButton" destination="sCu-UN-xcf" id="4E6-0m-Hcp"/>
+                        <outlet property="standardButton" destination="sCu-UN-xcf" id="iEC-3v-vdd"/>
+                        <outlet property="tcshButton" destination="6KU-JM-p70" id="Q25-ZA-3F8"/>
                         <outlet property="userIDImageView" destination="eTG-ed-e5a" id="D1Y-Vg-X7S"/>
                         <outlet property="userIDTextField" destination="D5Z-BS-nzu" id="sdY-QU-1jX"/>
                         <outlet property="verifyImageView" destination="OEM-Fr-ivE" id="3bI-77-6G1"/>
                         <outlet property="verifySecureTextField" destination="Wvy-uu-nsP" id="9Dh-U9-E7w"/>
+                        <outlet property="zshButton" destination="yAf-Kh-v2z" id="SeP-8N-HpG"/>
                     </connections>
                 </viewController>
                 <customObject id="2Tp-Fl-jBw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
