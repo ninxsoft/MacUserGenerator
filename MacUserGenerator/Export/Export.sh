@@ -128,8 +128,11 @@ setAutoLogin() {
 skipSetupAssistant() {
 
   local target="$1"
-  local plist="$homeFolder/Library/Preferences/com.apple.SetupAssistant.plist"
+  local home="$2"
+  local homeFolder="$target$home"
+  local preferencesFolder="$homeFolder/Library/Preferences"
 
+  mkdir -p "$preferencesFolder"
   touch "$target/var/db/.AppleSetupDone"
 }
 
@@ -196,7 +199,6 @@ setPermissions() {
   local preferencesFolder="$libraryFolder/Preferences"
   local plist="$preferencesFolder/com.apple.SetupAssistant.plist"
 
-  mkdir -p "$preferencesFolder"
   chmod 755 "$homeFolder"
   chown "$name" "$homeFolder"
   chmod 700 "$libraryFolder"
@@ -241,7 +243,7 @@ setPhoto "$target" "$name"
 ###SETADMINISTRATOR###setAdministrator "$target" "$generateduid" "$name"###SETADMINISTRATOR###
 ###HIDEUSERACCOUNT###hideUserAccount "$target" "$name"###HIDEUSERACCOUNT###
 ###SETAUTOLOGIN###setAutoLogin "$target" "$name" "#KCPASSWORDSTRING#"###SETAUTOLOGIN###
-###SKIPSETUPASSISTANT###skipSetupAssistant "$target"###SKIPSETUPASSISTANT###
+###SKIPSETUPASSISTANT###skipSetupAssistant "$target" "$home"###SKIPSETUPASSISTANT###
 ###SKIPICLOUD###skipiCloud "$target" "$home"###SKIPICLOUD###
 ###SKIPSIRI###skipSiri "$target" "$home"###SKIPSIRI###
 ###SKIPTOUCHID###skipTouchID "$target" "$home"###SKIPTOUCHID###
