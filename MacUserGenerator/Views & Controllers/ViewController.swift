@@ -80,66 +80,6 @@ class ViewController: NSViewController {
     validateExportButton()
   }
   
-  func controlTextDidChange(_ obj: Notification) {
-    
-    guard let textField = obj.object as? NSTextField else {
-      return
-    }
-    
-    let string = textField.stringValue
-    
-    if textField == fullNameTextField {
-      documentObject.fullName = string
-    }
-    else if textField == accountNameTextField {
-      documentObject.accountName = string
-    }
-    else if textField == passwordSecureTextField {
-      documentObject.password = string
-    }
-    else if textField == verifySecureTextField {
-      documentObject.verify = string
-    }
-    else if textField == passwordHintTextField {
-      documentObject.passwordHint = string
-    }
-    else if textField == userIDTextField {
-      documentObject.userID = string
-    }
-    else if textField == homeDirectoryTextField {
-      documentObject.homeDirectory = string
-    }
-    
-    documentHasBeenEdited()
-    validateExportButton()
-  }
-  
-  func controlTextDidEndEditing(_ obj: Notification) {
-    
-    guard let textField = obj.object as? NSTextField else {
-      return
-    }
-    
-    let string = textField.stringValue
-    
-    // auto populate account name if full name has been entered, and account name is blank
-    if textField == fullNameTextField && (accountNameTextField?.stringValue.isEmpty)! {
-      let accountName = string.convertedToAccountName
-      documentObject.accountName = accountName
-      accountNameTextField?.stringValue = accountName
-    }
-    // auto populate home directory if account name has been entered and is valid and home directory is blank
-    else if textField == accountNameTextField &&
-            documentObject.accountName.isValidAccountName &&
-            (homeDirectoryTextField?.stringValue.isEmpty)! {
-      let homeDirectory = "/Users/\(string)"
-      documentObject.homeDirectory = homeDirectory
-      homeDirectoryTextField?.stringValue = homeDirectory
-    }
-    
-    validateExportButton()
-  }
-  
   /**
    Pulls down an NSOpenPanel to select an image for the picture view.
    - Parameters:
@@ -427,5 +367,68 @@ class ViewController: NSViewController {
                               documentObject.userID.isValidUserID &&
                               documentObject.password == documentObject.verify &&
                               documentObject.homeDirectory.isValidHomeDirectory
+  }
+}
+
+extension ViewController: NSTextFieldDelegate {
+  
+  func controlTextDidChange(_ obj: Notification) {
+    
+    guard let textField = obj.object as? NSTextField else {
+      return
+    }
+    
+    let string = textField.stringValue
+    
+    if textField == fullNameTextField {
+      documentObject.fullName = string
+    }
+    else if textField == accountNameTextField {
+      documentObject.accountName = string
+    }
+    else if textField == passwordSecureTextField {
+      documentObject.password = string
+    }
+    else if textField == verifySecureTextField {
+      documentObject.verify = string
+    }
+    else if textField == passwordHintTextField {
+      documentObject.passwordHint = string
+    }
+    else if textField == userIDTextField {
+      documentObject.userID = string
+    }
+    else if textField == homeDirectoryTextField {
+      documentObject.homeDirectory = string
+    }
+    
+    documentHasBeenEdited()
+    validateExportButton()
+  }
+  
+  func controlTextDidEndEditing(_ obj: Notification) {
+    
+    guard let textField = obj.object as? NSTextField else {
+      return
+    }
+    
+    let string = textField.stringValue
+    
+    // auto populate account name if full name has been entered, and account name is blank
+    if textField == fullNameTextField && (accountNameTextField?.stringValue.isEmpty)! {
+      let accountName = string.convertedToAccountName
+      documentObject.accountName = accountName
+      accountNameTextField?.stringValue = accountName
+    }
+    // auto populate home directory if account name has been entered and is valid and home directory is blank
+    else if textField == accountNameTextField &&
+      documentObject.accountName.isValidAccountName &&
+      (homeDirectoryTextField?.stringValue.isEmpty)! {
+      let homeDirectory = "/Users/\(string)"
+      documentObject.homeDirectory = homeDirectory
+      homeDirectoryTextField?.stringValue = homeDirectory
+    }
+    
+    validateExportButton()
   }
 }
