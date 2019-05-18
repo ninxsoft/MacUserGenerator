@@ -95,27 +95,7 @@ extension String {
    Converts the provided string to a valid account name (shortname) string.
   */
   var convertedToAccountName: String {
-    
-    guard self.rangeOfCharacter(from: .whitespacesAndNewlines) != nil else {
-      return self.lowercased()
-    }
-    
-    var string = ""
-      
-    let words = self.split(separator: " ")
-    
-    for (index, word) in words.enumerated() {
-      
-      if index == 0 {
-        string = string + word.lowercased()
-      }
-      else {
-        let startIndex = word.index(word.startIndex, offsetBy: 1)
-        string = string + String(word[word.startIndex]).uppercased() + String(word[startIndex..<word.endIndex]).lowercased()
-      }
-    }
-    
-    return string
+    return self.replacePatternMatches(of: " ", with: "").lowercased()
   }
   
   /**
