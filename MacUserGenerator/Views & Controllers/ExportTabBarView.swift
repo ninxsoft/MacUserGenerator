@@ -31,7 +31,7 @@ import Cocoa
     paragraphStyle.alignment = .center
     
     // title attributes (font size, color, alignment)
-    let attributes: [NSAttributedStringKey: Any] = [.font: NSFont.systemFont(ofSize: fontSize),
+    let attributes: [NSAttributedString.Key: Any] = [.font: NSFont.systemFont(ofSize: fontSize),
                                                     .foregroundColor: selected ? selectedTextColor : textColor,
                                                     .paragraphStyle: paragraphStyle]
 

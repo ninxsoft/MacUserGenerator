@@ -1,4 +1,5 @@
 # MacUserGenerator
+
 A utility that assists in automating the creation of macOS User Accounts.
 
 MacUserGenerator (MUG) is written from the ground up, with ideas ***heavily*** inspired from [MagerValp's](https://github.com/MagerValp) [CreateUserPkg](https://github.com/MagerValp/CreateUserPkg).
@@ -62,7 +63,7 @@ Grab the latest version of MacUserGenerator from the [releases page](https://git
     *   Initial release
 
 ## License
-    Copyright © 2017 Nindi Gill
+    Copyright © 2019 Nindi Gill
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

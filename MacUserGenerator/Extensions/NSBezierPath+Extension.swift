@@ -23,16 +23,19 @@ extension NSBezierPath {
       let type = self.element(at: i, associatedPoints: &points)
       
       switch type {
-      case .moveToBezierPathElement:
+      case .moveTo:
         path.move(to: points[0])
         break
-      case .lineToBezierPathElement:
+      case .lineTo:
         path.addLine(to: points[0])
         break
-      case .curveToBezierPathElement:
+      case .curveTo:
         path.addCurve(to: points[0], control1: points[1], control2: points[2])
         break
-      case .closePathBezierPathElement:
+      case .closePath:
+        path.closeSubpath()
+        break
+      default:
         path.closeSubpath()
         break
       }

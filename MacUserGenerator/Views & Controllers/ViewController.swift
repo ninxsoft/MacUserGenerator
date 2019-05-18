@@ -80,7 +80,7 @@ class ViewController: NSViewController {
     validateExportButton()
   }
   
-  override func controlTextDidChange(_ obj: Notification) {
+  func controlTextDidChange(_ obj: Notification) {
     
     guard let textField = obj.object as? NSTextField else {
       return
@@ -114,7 +114,7 @@ class ViewController: NSViewController {
     validateExportButton()
   }
   
-  override func controlTextDidEndEditing(_ obj: Notification) {
+  func controlTextDidEndEditing(_ obj: Notification) {
     
     guard let textField = obj.object as? NSTextField else {
       return
@@ -263,9 +263,9 @@ class ViewController: NSViewController {
   */
   private func showExportWindow() {
 
-    let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
+    let storyboard = NSStoryboard(name: "Main", bundle: nil)
 
-    guard let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("ExportWindowController")) as? NSWindowController else {
+    guard let windowController = storyboard.instantiateController(withIdentifier: "ExportWindowController") as? NSWindowController else {
       return
     }
 
@@ -412,16 +412,16 @@ class ViewController: NSViewController {
   private func validateExportButton() {
 
     let accountName = documentObject.accountName.isEmpty ? "NSStatusPartiallyAvailable" : (documentObject.accountName.isValidAccountName ? "NSStatusAvailable" : "NSStatusUnavailable")
-    accountNameImageView?.image = NSImage(named: NSImage.Name(rawValue: accountName))
+    accountNameImageView?.image = NSImage(named: accountName)
 
     let verify = documentObject.verify.isEmpty ? "NSStatusPartiallyAvailable" : (documentObject.password == documentObject.verify ? "NSStatusAvailable" : "NSStatusUnavailable")
-    verifyImageView?.image = NSImage(named: NSImage.Name(rawValue: verify))
+    verifyImageView?.image = NSImage(named: verify)
 
     let userID = documentObject.userID.isEmpty ? "NSStatusPartiallyAvailable" : (documentObject.userID.isValidUserID ? "NSStatusAvailable" : "NSStatusUnavailable")
-    userIDImageView?.image = NSImage(named: NSImage.Name(rawValue: userID))
+    userIDImageView?.image = NSImage(named: userID)
 
     let homeDirectory = documentObject.homeDirectory.isEmpty ? "NSStatusPartiallyAvailable" : (documentObject.homeDirectory.isValidHomeDirectory ? "NSStatusAvailable" : "NSStatusUnavailable")
-    homeDirectoryImageView?.image = NSImage(named: NSImage.Name(rawValue: homeDirectory))
+    homeDirectoryImageView?.image = NSImage(named: homeDirectory)
 
     exportButton?.isEnabled = documentObject.accountName.isValidAccountName &&
                               documentObject.userID.isValidUserID &&

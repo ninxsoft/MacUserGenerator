@@ -18,9 +18,9 @@ class Document: NSDocument {
 
   override func makeWindowControllers() {
 
-    let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
+    let storyboard = NSStoryboard(name: "Main", bundle: nil)
     
-    guard let windowController = storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController else {
+    guard let windowController = storyboard.instantiateController(withIdentifier: "Document Window Controller") as? NSWindowController else {
       return
     }
     

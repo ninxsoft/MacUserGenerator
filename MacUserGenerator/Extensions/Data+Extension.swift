@@ -25,7 +25,7 @@ extension Data {
 
       bytes[index >> 1] |= nibble
     }
-    self = Data(bytes: bytes)
+    self = Data(bytes: bytes, count: bytes.count)
   }
 }
 

@@ -26,7 +26,7 @@ class PictureView: NSView {
     
     // image layer
     imageLayer.frame = NSRect(origin: CGPoint.zero, size: frame.size)
-    imageLayer.contentsGravity = kCAGravityResizeAspect
+    imageLayer.contentsGravity = .resizeAspect
     self.layer?.addSublayer(imageLayer)
     
     // shape layer
@@ -38,12 +38,12 @@ class PictureView: NSView {
     self.layer?.addSublayer(shapeLayer)
     
     // text layer
-    let attributes = [NSAttributedStringKey.font: NSFont.systemFont(ofSize: 14.0),
-                      NSAttributedStringKey.foregroundColor: NSColor.white.cgColor] as [NSAttributedStringKey : Any]
+    let attributes = [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14.0),
+                      NSAttributedString.Key.foregroundColor: NSColor.white.cgColor] as [NSAttributedString.Key : Any]
     let attributedString = NSAttributedString(string: "Edit", attributes: attributes)
     textLayer.string = attributedString
     textLayer.backgroundColor = NSColor.black.cgColor
-    textLayer.alignmentMode = kCAAlignmentCenter
+    textLayer.alignmentMode = .center
     textLayer.contentsScale = (NSScreen.main?.backingScaleFactor)!
     let size = CGSize(width: self.frame.size.width,
                       height: self.frame.size.height * 0.25)
@@ -76,7 +76,7 @@ class PictureView: NSView {
   
   override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
     
-    let pasteboard = sender.draggingPasteboard()
+    let pasteboard = sender.draggingPasteboard
     let url = NSURL(from: pasteboard)
     
     guard let pathExtension = url?.pathExtension else {
@@ -88,7 +88,7 @@ class PictureView: NSView {
   
   override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
 
-    let pasteboard = sender.draggingPasteboard()
+    let pasteboard = sender.draggingPasteboard
     let url = NSURL(from: pasteboard)
     
     guard let pathExtension = url?.pathExtension else {
@@ -100,7 +100,7 @@ class PictureView: NSView {
   
   override func concludeDragOperation(_ sender: NSDraggingInfo?) {
     
-    guard let pasteboard = sender?.draggingPasteboard() else {
+    guard let pasteboard = sender?.draggingPasteboard else {
       return
     }
     

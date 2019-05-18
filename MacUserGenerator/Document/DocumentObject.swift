@@ -90,7 +90,7 @@ class DocumentObject: NSObject {
       let image = NSImage(data: data) {
       picture = image
     }
-    else if let image = NSImage(named: NSImage.Name(rawValue: "Picture")) {
+    else if let image = NSImage(named: "Picture") {
       picture = image
     }
     

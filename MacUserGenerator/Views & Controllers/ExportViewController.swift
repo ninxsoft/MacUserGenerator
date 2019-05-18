@@ -79,7 +79,7 @@ class ExportViewController: NSViewController {
       
       packageCertificatesPopUpButton?.addItem(withTitle: certificate)
         
-      if let image = NSImage(named: NSImage.Name(rawValue: "Certificate")),
+      if let image = NSImage(named: "Certificate"),
         let item = self.packageCertificatesPopUpButton?.itemArray.last {
         item.image = image
       }
@@ -114,7 +114,7 @@ class ExportViewController: NSViewController {
     validateNextButton()
   }
   
-  override func controlTextDidChange(_ obj: Notification) {
+  func controlTextDidChange(_ obj: Notification) {
     validateNextButton()
   }
   
