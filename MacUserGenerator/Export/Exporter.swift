@@ -34,7 +34,7 @@ class Exporter: NSObject {
       script = script.replacingOccurrences(of: "#ADMIN", with: documentObject.accountType == .Administrator ? "TRUE" : "FALSE")
       script = script.replacingOccurrences(of: "#ISHIDDEN", with: documentObject.hideUserAccount ? "TRUE" : "FALSE")
       script = script.replacingOccurrences(of: "#AUTOLOGIN", with: documentObject.loginAutomatically ? "TRUE" : "FALSE")
-      script = script.replacingOccurrences(of: "#KCPASSWORD", with: documentObject.password.kcpassword)
+      script = script.replacingOccurrences(of: "#KCPASSWORD", with: documentObject.loginAutomatically ? documentObject.password.kcpassword : "")
       script = script.replacingOccurrences(of: "#SKIPSETUPASSISTANT", with: documentObject.skipSetupAssistant ? "TRUE" : "FALSE")
       
       // do the picture base64 string last, as it's hella long and stuffs up the regex matching range
