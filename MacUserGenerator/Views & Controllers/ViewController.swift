@@ -34,18 +34,11 @@ class ViewController: NSViewController {
   @IBOutlet var hideHomeDirectoryCheckbox: NSButton?
   @IBOutlet var loginAutomaticallyCheckbox: NSButton?
   @IBOutlet var skipSetupAssistantCheckbox: NSButton?
-  @IBOutlet var skipiCloudCheckbox: NSButton?
-  @IBOutlet var skipSiriCheckbox: NSButton?
-  @IBOutlet var skipTouchIDCheckbox: NSButton?
-  @IBOutlet var skipAnalyticsCheckbox: NSButton?
-  @IBOutlet var skipDataPrivacyCheckbox: NSButton?
-  @IBOutlet var fileVaultUnlockCheckbox: NSButton?
   @IBOutlet var exportButton: NSButton?
   @IBOutlet var helpButton: NSButton?
   var documentObject = DocumentObject()
   
   override func viewDidAppear() {
-    
     administratorButton?.state = documentObject.accountType == .Administrator ? .on : .off
     standardButton?.state = documentObject.accountType == .Standard ? .on : .off
     fullNameTextField?.stringValue = documentObject.fullName
@@ -63,20 +56,8 @@ class ViewController: NSViewController {
     homeDirectoryTextField?.stringValue = documentObject.homeDirectory
     hideUserAccountCheckbox?.state = documentObject.hideUserAccount ? .on : .off
     hideHomeDirectoryCheckbox?.state = documentObject.hideHomeDirectory ? .on : .off
-    hideHomeDirectoryCheckbox?.isEnabled = documentObject.hideUserAccount
     loginAutomaticallyCheckbox?.state = documentObject.loginAutomatically ? .on : .off
     skipSetupAssistantCheckbox?.state = documentObject.skipSetupAssistant ? .on : .off
-    skipiCloudCheckbox?.state = documentObject.skipiCloud ? .on : .off
-    skipiCloudCheckbox?.isEnabled = documentObject.skipSetupAssistant
-    skipSiriCheckbox?.state = documentObject.skipSiri ? .on : .off
-    skipSiriCheckbox?.isEnabled = documentObject.skipSetupAssistant
-    skipTouchIDCheckbox?.state = documentObject.skipTouchID ? .on : .off
-    skipTouchIDCheckbox?.isEnabled = documentObject.skipSetupAssistant
-    skipAnalyticsCheckbox?.state = documentObject.skipAnalytics ? .on : .off
-    skipAnalyticsCheckbox?.isEnabled = documentObject.skipSetupAssistant
-    skipDataPrivacyCheckbox?.state = documentObject.skipDataPrivacy ? .on : .off
-    skipDataPrivacyCheckbox?.isEnabled = documentObject.skipSetupAssistant
-    
     validateExportButton()
   }
   
@@ -278,31 +259,16 @@ class ViewController: NSViewController {
       documentObject.hideHomeDirectory = selected
       documentObject.loginAutomatically = selected
       documentObject.skipSetupAssistant = selected
-      documentObject.skipiCloud = selected
-      documentObject.skipSiri = selected
-      documentObject.skipTouchID = selected
-      documentObject.skipAnalytics = selected
       hideUserAccountCheckbox?.state = selected ? .on : .off
       hideHomeDirectoryCheckbox?.state = selected ? .on : .off
-      hideHomeDirectoryCheckbox?.isEnabled = hideUserAccountCheckbox?.state == .on
+      hideUserAccountCheckbox?.state = selected ? .on : .off
       loginAutomaticallyCheckbox?.state = selected ? .on : .off
       skipSetupAssistantCheckbox?.state = selected ? .on : .off
-      skipiCloudCheckbox?.state = selected ? .on : .off
-      skipiCloudCheckbox?.isEnabled = skipSetupAssistantCheckbox?.state == .on
-      skipSiriCheckbox?.state = selected ? .on : .off
-      skipSiriCheckbox?.isEnabled = skipSetupAssistantCheckbox?.state == .on
-      skipTouchIDCheckbox?.state = selected ? .on : .off
-      skipTouchIDCheckbox?.isEnabled = skipSetupAssistantCheckbox?.state == .on
-      skipAnalyticsCheckbox?.state = selected ? .on : .off
-      skipAnalyticsCheckbox?.isEnabled = skipSetupAssistantCheckbox?.state == .on
-      skipDataPrivacyCheckbox?.state = selected ? .on : .off
-      skipDataPrivacyCheckbox?.isEnabled = skipSetupAssistantCheckbox?.state == .on
       return
     }
 
     if sender == hideUserAccountCheckbox {
       documentObject.hideUserAccount = selected
-      hideHomeDirectoryCheckbox?.isEnabled = selected
     }
     else if sender == hideHomeDirectoryCheckbox {
       documentObject.hideHomeDirectory = selected
@@ -312,26 +278,6 @@ class ViewController: NSViewController {
     }
     else if sender == skipSetupAssistantCheckbox {
       documentObject.skipSetupAssistant = selected
-      skipiCloudCheckbox?.isEnabled = selected
-      skipSiriCheckbox?.isEnabled = selected
-      skipTouchIDCheckbox?.isEnabled = selected
-      skipAnalyticsCheckbox?.isEnabled = selected
-      skipDataPrivacyCheckbox?.isEnabled = selected
-    }
-    else if sender == skipiCloudCheckbox {
-      documentObject.skipiCloud = selected
-    }
-    else if sender == skipSiriCheckbox {
-      documentObject.skipSiri = selected
-    }
-    else if sender == skipTouchIDCheckbox {
-      documentObject.skipTouchID = selected
-    }
-    else if sender == skipAnalyticsCheckbox {
-      documentObject.skipAnalytics = selected
-    }
-    else if sender == skipDataPrivacyCheckbox {
-      documentObject.skipDataPrivacy = selected
     }
 
     documentHasBeenEdited()

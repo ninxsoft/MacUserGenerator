@@ -100,6 +100,7 @@ class ExportViewController: NSViewController {
     for (index, tabBarView) in [packageTabBarView, scriptTabBarView].enumerated() {
       
       tabBarView?.selected = sender.view == tabBarView
+      tabBarView?.needsDisplay = true
       
       if sender.view == tabBarView {
         

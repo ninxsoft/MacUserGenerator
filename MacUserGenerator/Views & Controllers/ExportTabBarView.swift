@@ -9,12 +9,14 @@
 import Cocoa
 
 @IBDesignable class ExportTabBarView: NSView {
+  
+  private var inDarkMode: Bool {
+    let mode = UserDefaults.standard.string(forKey: "AppleInterfaceStyle")
+    return mode == "Dark"
+  }
 
   @IBInspectable var title: NSString = "Title"
   @IBInspectable var fontSize: CGFloat = 14.0
-  @IBInspectable var textColor: NSColor = NSColor.black
-  @IBInspectable var selectedTextColor: NSColor = NSColor.systemBlue
-  @IBInspectable var selectedBackgroundColor: NSColor = NSColor.systemBlue.withAlphaComponent(0.2)
   @IBInspectable var selected: Bool = false
   
   override func draw(_ dirtyRect: NSRect) {
@@ -22,6 +24,7 @@ import Cocoa
     
     // highlight background if tab bar view is selected
     if selected {
+      let selectedBackgroundColor = inDarkMode ? NSColor.systemBlue.withAlphaComponent(0.2) :  NSColor.systemBlue.withAlphaComponent(0.2)
       selectedBackgroundColor.setFill()
       dirtyRect.fill()
     }
@@ -31,6 +34,8 @@ import Cocoa
     paragraphStyle.alignment = .center
     
     // title attributes (font size, color, alignment)
+    let textColor = inDarkMode ? NSColor.white : NSColor.black
+    let selectedTextColor = inDarkMode ? NSColor.systemBlue : NSColor.systemBlue
     let attributes: [NSAttributedString.Key: Any] = [.font: NSFont.systemFont(ofSize: fontSize),
                                                     .foregroundColor: selected ? selectedTextColor : textColor,
                                                     .paragraphStyle: paragraphStyle]

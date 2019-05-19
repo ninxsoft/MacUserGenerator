@@ -19,18 +19,12 @@ class DocumentObject: NSObject {
     case Verify
     case PasswordHint
     case UserID
-    case GroupID
     case LoginShell
     case HomeDirectory
     case HideUserAccount
     case HideHomeDirectory
     case LoginAutomatically
     case SkipSetupAssistant
-    case SkipiCloud
-    case SkipSiri
-    case SkipTouchID
-    case SkipAnalytics
-    case SkipDataPrivacy
   }
   
   enum AccountType: String {
@@ -55,18 +49,12 @@ class DocumentObject: NSObject {
   var verify = ""
   var passwordHint = ""
   var userID = ""
-  var groupID = "20"
   var loginShell = LoginShell.bash
   var homeDirectory = ""
   var hideUserAccount = false
   var hideHomeDirectory = false
   var loginAutomatically = false
   var skipSetupAssistant = false
-  var skipiCloud = false
-  var skipSiri = false
-  var skipTouchID = false
-  var skipAnalytics = false
-  var skipDataPrivacy = false
   
   convenience init(dictionary: NSDictionary) {
     self.init()
@@ -100,10 +88,6 @@ class DocumentObject: NSObject {
       userID = string
     }
     
-    if let string = dictionary[Key.GroupID.rawValue] as? String {
-      groupID = string
-    }
-    
     if let string = dictionary[Key.LoginShell.rawValue] as? String,
       let shell = LoginShell(rawValue: string) {
       loginShell = shell
@@ -128,26 +112,6 @@ class DocumentObject: NSObject {
     if let boolean = dictionary[Key.SkipSetupAssistant.rawValue] as? Bool {
       skipSetupAssistant = boolean
     }
-    
-    if let boolean = dictionary[Key.SkipiCloud.rawValue] as? Bool {
-      skipiCloud = boolean
-    }
-    
-    if let boolean = dictionary[Key.SkipSiri.rawValue] as? Bool {
-      skipSiri = boolean
-    }
-    
-    if let boolean = dictionary[Key.SkipTouchID.rawValue] as? Bool {
-      skipTouchID = boolean
-    }
-    
-    if let boolean = dictionary[Key.SkipAnalytics.rawValue] as? Bool {
-      skipAnalytics = boolean
-    }
-    
-    if let boolean = dictionary[Key.SkipDataPrivacy.rawValue] as? Bool {
-      skipDataPrivacy = boolean
-    }
   }
   
   /**
@@ -161,18 +125,12 @@ class DocumentObject: NSObject {
     dictionary[Key.Picture.rawValue] = picture.isValid ? picture.tiffRepresentation : nil
     dictionary[Key.PasswordHint.rawValue] = passwordHint
     dictionary[Key.UserID.rawValue] = userID
-    dictionary[Key.GroupID.rawValue] = groupID
     dictionary[Key.LoginShell.rawValue] = loginShell.rawValue
     dictionary[Key.HomeDirectory.rawValue] = homeDirectory
     dictionary[Key.HideUserAccount.rawValue] = hideUserAccount
     dictionary[Key.HideHomeDirectory.rawValue] = hideHomeDirectory
     dictionary[Key.LoginAutomatically.rawValue] = loginAutomatically
     dictionary[Key.SkipSetupAssistant.rawValue] = skipSetupAssistant
-    dictionary[Key.SkipiCloud.rawValue] = skipiCloud
-    dictionary[Key.SkipSiri.rawValue] = skipSiri
-    dictionary[Key.SkipTouchID.rawValue] = skipTouchID
-    dictionary[Key.SkipAnalytics.rawValue] = skipAnalytics
-    dictionary[Key.SkipDataPrivacy.rawValue] = skipDataPrivacy
     return dictionary
   }
 }
