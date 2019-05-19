@@ -707,11 +707,11 @@
             <objects>
                 <viewController id="5gI-5U-AMq" customClass="ViewController" customModule="MacUserGenerator" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="ERx-hH-rdd">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="534"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="544"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="trailing" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vA6-xS-g9g">
-                                <rect key="frame" x="30" y="201" width="100" height="313"/>
+                                <rect key="frame" x="30" y="211" width="100" height="313"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="H2c-YT-oAQ">
                                         <rect key="frame" x="11" y="296" width="91" height="17"/>
@@ -810,7 +810,7 @@
                                 </customSpacing>
                             </stackView>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yQg-GX-1pd">
-                                <rect key="frame" x="140" y="457" width="206" height="22"/>
+                                <rect key="frame" x="140" y="467" width="206" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Test" placeholderString="Test" drawsBackground="YES" id="zlh-89-Zez">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -821,7 +821,7 @@
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BDn-Ps-xue">
-                                <rect key="frame" x="140" y="420" width="206" height="22"/>
+                                <rect key="frame" x="140" y="430" width="206" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="test" placeholderString="test" drawsBackground="YES" id="mbO-vf-kD1">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -832,7 +832,7 @@
                                 </connections>
                             </textField>
                             <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="g1h-8d-E5j">
-                                <rect key="frame" x="140" y="383" width="310" height="22"/>
+                                <rect key="frame" x="140" y="393" width="310" height="22"/>
                                 <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="test" placeholderString="Required" drawsBackground="YES" usesSingleLineMode="YES" id="KuC-OP-LKs">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -846,7 +846,7 @@
                                 </connections>
                             </secureTextField>
                             <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wvy-uu-nsP">
-                                <rect key="frame" x="140" y="346" width="310" height="22"/>
+                                <rect key="frame" x="140" y="356" width="310" height="22"/>
                                 <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="test" placeholderString="Verify" drawsBackground="YES" usesSingleLineMode="YES" id="g3c-Ok-qIx">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -860,7 +860,7 @@
                                 </connections>
                             </secureTextField>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Gdl-cy-nc3">
-                                <rect key="frame" x="140" y="309" width="310" height="22"/>
+                                <rect key="frame" x="140" y="319" width="310" height="22"/>
                                 <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Hint (Recommended)" drawsBackground="YES" id="Arr-de-8Rv">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -871,7 +871,7 @@
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D5Z-BS-nzu">
-                                <rect key="frame" x="140" y="272" width="68" height="22"/>
+                                <rect key="frame" x="140" y="282" width="68" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="501" placeholderString="501" drawsBackground="YES" id="jTt-0m-YTJ">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -882,7 +882,7 @@
                                 </connections>
                             </textField>
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Ty2-gg-gmA">
-                                <rect key="frame" x="30" y="178" width="420" height="5"/>
+                                <rect key="frame" x="30" y="188" width="420" height="5"/>
                             </box>
                             <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Fl-Xc-hLx">
                                 <rect key="frame" x="427" y="16" width="25" height="25"/>
@@ -895,7 +895,7 @@
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MxT-SB-6bj">
-                                <rect key="frame" x="140" y="198" width="222" height="22"/>
+                                <rect key="frame" x="140" y="208" width="222" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="/Users/test" placeholderString="/Users/test" drawsBackground="YES" id="FfM-7N-zLV">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -906,7 +906,7 @@
                                 </connections>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eQc-m1-WEq">
-                                <rect key="frame" x="366" y="192" width="90" height="32"/>
+                                <rect key="frame" x="366" y="202" width="90" height="32"/>
                                 <buttonCell key="cell" type="push" title="Select..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KSZ-Rc-iAd">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -916,7 +916,7 @@
                                 </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="NPH-Iu-DBl">
-                                <rect key="frame" x="138" y="94" width="141" height="18"/>
+                                <rect key="frame" x="138" y="104" width="141" height="18"/>
                                 <buttonCell key="cell" type="check" title="Login Automatically" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Edd-zk-iGB">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -926,7 +926,7 @@
                                 </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="vca-3B-ATU">
-                                <rect key="frame" x="138" y="70" width="147" height="18"/>
+                                <rect key="frame" x="138" y="80" width="147" height="18"/>
                                 <buttonCell key="cell" type="check" title="Skip Setup Assistant" bezelStyle="regularSquare" imagePosition="left" inset="2" id="EIj-64-jJR">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -936,7 +936,7 @@
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cpA-At-5fj">
-                                <rect key="frame" x="42" y="143" width="90" height="17"/>
+                                <rect key="frame" x="42" y="153" width="90" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Nice to haves:" id="O26-xi-8jU">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -957,7 +957,7 @@
                                 <rect key="frame" x="30" y="59" width="420" height="5"/>
                             </box>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="SCA-aS-kDK" customClass="PictureView" customModule="MacUserGenerator" customModuleProvider="target">
-                                <rect key="frame" x="356" y="420" width="94" height="94"/>
+                                <rect key="frame" x="356" y="430" width="94" height="94"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="SCA-aS-kDK" secondAttribute="height" multiplier="1:1" id="qPJ-3p-eo2"/>
                                 </constraints>
@@ -970,7 +970,7 @@
                                 </gestureRecognizers>
                             </customView>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="dbz-Xf-84h">
-                                <rect key="frame" x="138" y="142" width="136" height="18"/>
+                                <rect key="frame" x="138" y="152" width="136" height="18"/>
                                 <buttonCell key="cell" type="check" title="Hide User Account" bezelStyle="regularSquare" imagePosition="left" inset="2" id="BVL-Ed-YEL">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -980,7 +980,7 @@
                                 </connections>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="bmv-oa-6AZ">
-                                <rect key="frame" x="138" y="118" width="149" height="18"/>
+                                <rect key="frame" x="138" y="128" width="149" height="18"/>
                                 <buttonCell key="cell" type="check" title="Hide Home Directory" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ZhA-f1-UnD">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -990,7 +990,7 @@
                                 </connections>
                             </button>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UhL-i6-GUC">
-                                <rect key="frame" x="341" y="201" width="16" height="16"/>
+                                <rect key="frame" x="341" y="211" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="UhL-i6-GUC" secondAttribute="height" multiplier="1:1" id="cfl-cs-7bR"/>
                                     <constraint firstAttribute="width" constant="16" id="egb-hM-Flk"/>
@@ -998,21 +998,21 @@
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSStatusPartiallyAvailable" id="59G-Wc-Dnp"/>
                             </imageView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eTG-ed-e5a">
-                                <rect key="frame" x="187" y="275" width="16" height="16"/>
+                                <rect key="frame" x="187" y="285" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="lug-Ff-pxU"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSStatusPartiallyAvailable" id="cpg-wu-guL"/>
                             </imageView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OEM-Fr-ivE">
-                                <rect key="frame" x="429" y="349" width="16" height="16"/>
+                                <rect key="frame" x="429" y="359" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="7Js-pQ-GWg"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSStatusPartiallyAvailable" id="j4n-05-yga"/>
                             </imageView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ptN-zZ-M3k">
-                                <rect key="frame" x="325" y="423" width="16" height="16"/>
+                                <rect key="frame" x="325" y="433" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ptN-zZ-M3k" secondAttribute="height" multiplier="1:1" id="jlC-LW-HbM"/>
                                     <constraint firstAttribute="width" constant="16" id="ryV-xr-ov1"/>
@@ -1020,7 +1020,7 @@
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSStatusPartiallyAvailable" id="iZc-EJ-J0g"/>
                             </imageView>
                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kWc-Ce-K0c">
-                                <rect key="frame" x="140" y="238" width="251" height="16"/>
+                                <rect key="frame" x="140" y="248" width="251" height="16"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uen-6H-Fc7">
                                         <rect key="frame" x="-1" y="-1" width="52" height="18"/>
@@ -1089,7 +1089,7 @@
                                 </customSpacing>
                             </stackView>
                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vEg-jB-NKg">
-                                <rect key="frame" x="140" y="497" width="186" height="16"/>
+                                <rect key="frame" x="140" y="507" width="186" height="16"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UnZ-fm-KeD">
                                         <rect key="frame" x="-1" y="-1" width="104" height="18"/>
@@ -1163,7 +1163,7 @@
                             <constraint firstItem="Wvy-uu-nsP" firstAttribute="baseline" secondItem="7Sq-76-5ax" secondAttribute="baseline" id="bME-EB-noU"/>
                             <constraint firstItem="g1h-8d-E5j" firstAttribute="baseline" secondItem="lap-WR-49Y" secondAttribute="baseline" id="bzG-bl-8DG"/>
                             <constraint firstItem="MxT-SB-6bj" firstAttribute="trailing" secondItem="UhL-i6-GUC" secondAttribute="trailing" constant="5" id="cj3-2H-lbB"/>
-                            <constraint firstItem="9KJ-CW-4fM" firstAttribute="top" secondItem="vca-3B-ATU" secondAttribute="bottom" constant="10" id="dAe-mq-vfR"/>
+                            <constraint firstItem="9KJ-CW-4fM" firstAttribute="top" secondItem="vca-3B-ATU" secondAttribute="bottom" constant="20" id="dAe-mq-vfR"/>
                             <constraint firstItem="8GS-UR-QIJ" firstAttribute="top" secondItem="9KJ-CW-4fM" secondAttribute="bottom" constant="20" id="eOQ-WS-mmN"/>
                             <constraint firstItem="yQg-GX-1pd" firstAttribute="leading" secondItem="vA6-xS-g9g" secondAttribute="trailing" constant="10" id="eRX-30-Q1W"/>
                             <constraint firstItem="Ty2-gg-gmA" firstAttribute="top" secondItem="vA6-xS-g9g" secondAttribute="bottom" constant="20" id="eoM-Hl-BBu"/>
@@ -1253,11 +1253,11 @@
             <objects>
                 <viewController storyboardIdentifier="ExportViewController" id="SQl-a2-Hze" customClass="ExportViewController" customModule="MacUserGenerator" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="erc-ZL-8Jf">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="312"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="200"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tabView type="noTabsBezelBorder" initialItem="HyT-mR-qx6" translatesAutoresizingMaskIntoConstraints="NO" id="oIp-rl-l6Z">
-                                <rect key="frame" x="-4" y="37" width="458" height="186"/>
+                                <rect key="frame" x="-4" y="37" width="458" height="74"/>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="Package" identifier="" id="HyT-mR-qx6">
@@ -1270,7 +1270,7 @@
                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" id="cXK-Et-kwe">
                                                         <font key="font" metaFont="system"/>
                                                         <string key="title">Packages (.pkg) can be installed by double clicking,
-or scripted via the Command Line.</string>
+or automated via the Command Line.</string>
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
@@ -1389,7 +1389,7 @@ or scripted via the Command Line.</string>
                                                     <rect key="frame" x="8" y="10" width="422" height="34"/>
                                                     <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" id="yRf-Ed-Ora">
                                                         <font key="font" metaFont="system"/>
-                                                        <string key="title">Shell Scripts (.sh) can be executed via the Command Line.
+                                                        <string key="title">Python Scripts (.py) can be executed via the Command Line.
 You can use applications such as Terminal.app to execute scripts.</string>
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1430,7 +1430,7 @@ Gw
                                 </connections>
                             </button>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="DWf-4a-MQZ" customClass="ExportTabBarView" customModule="MacUserGenerator" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="221" width="225" height="48"/>
+                                <rect key="frame" x="0.0" y="109" width="225" height="48"/>
                                 <gestureRecognizers>
                                     <clickGestureRecognizer delaysPrimaryMouseButtonEvents="YES" numberOfClicksRequired="1" id="AAu-Yf-iea">
                                         <connections>
@@ -1444,7 +1444,7 @@ Gw
                                 </userDefinedRuntimeAttributes>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="K2S-qq-aHF" customClass="ExportTabBarView" customModule="MacUserGenerator" customModuleProvider="target">
-                                <rect key="frame" x="226" y="221" width="224" height="48"/>
+                                <rect key="frame" x="226" y="109" width="224" height="48"/>
                                 <gestureRecognizers>
                                     <clickGestureRecognizer delaysPrimaryMouseButtonEvents="YES" numberOfClicksRequired="1" id="hhH-zd-ZFO">
                                         <connections>
@@ -1460,7 +1460,7 @@ Gw
                                 </userDefinedRuntimeAttributes>
                             </customView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Inz-IB-bi2">
-                                <rect key="frame" x="196" y="280" width="58" height="22"/>
+                                <rect key="frame" x="196" y="168" width="58" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Export" id="PMj-bV-tlH">
                                     <font key="font" metaFont="system" size="18"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1468,10 +1468,10 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="yuB-is-gO9">
-                                <rect key="frame" x="0.0" y="267" width="450" height="5"/>
+                                <rect key="frame" x="0.0" y="155" width="450" height="5"/>
                             </box>
                             <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Vcl-AN-3p3">
-                                <rect key="frame" x="223" y="221" width="5" height="48"/>
+                                <rect key="frame" x="223" y="109" width="5" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="7XN-Iy-wbh"/>
                                 </constraints>
