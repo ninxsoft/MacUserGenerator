@@ -28,7 +28,6 @@ class Exporter: NSObject {
       script = script.replaceFirstOccurrence(of: "#REALNAME#", with: documentObject.fullName)
       script = script.replaceFirstOccurrence(of: "#UID#", with: documentObject.userID)
       script = script.replaceFirstOccurrence(of: "#GID#", with: documentObject.groupID)
-      script = script.replaceFirstOccurrence(of: "#GENERATEDUID#", with: documentObject.generatedUID)
       script = script.replaceFirstOccurrence(of: "#SHELL#", with: documentObject.loginShell.rawValue)
       script = script.replaceFirstOccurrence(of: "#HINT#", with: documentObject.passwordHint)
       

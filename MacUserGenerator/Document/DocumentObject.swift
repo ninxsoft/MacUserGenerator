@@ -20,7 +20,6 @@ class DocumentObject: NSObject {
     case PasswordHint
     case UserID
     case GroupID
-    case GeneratedUID
     case LoginShell
     case HomeDirectory
     case HideUserAccount
@@ -57,7 +56,6 @@ class DocumentObject: NSObject {
   var passwordHint = ""
   var userID = ""
   var groupID = "20"
-  var generatedUID = NSUUID().uuidString
   var loginShell = LoginShell.bash
   var homeDirectory = ""
   var hideUserAccount = false

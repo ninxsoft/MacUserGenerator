@@ -222,7 +222,7 @@ restartDirectoryServices() {
   fi
 }
 
-generateduid="#GENERATEDUID#"
+generateduid="$(uuidgen)"
 gid="#GID#"
 home="#HOME#"
 name="#NAME#"
