@@ -57,21 +57,6 @@ extension String {
   }
   
   /**
-   Returns a string replacing the first occurence of a pattern string with a given string.
-   - Parameters:
-     - pattern: The substring being searched for.
-     - newString: The substring to replace the first match with.
-  */
-  func replaceFirstOccurrence(of pattern: String, with newString: String) -> String {
-    
-    guard let range = self.range(of: pattern) else {
-      return self
-    }
-    
-    return self.replacingCharacters(in: range, with: newString)
-  }
-  
-  /**
    Returns a string replacing all matches of a pattern string with a given string.
    - Parameters:
      - pattern: The substring being searched for.
