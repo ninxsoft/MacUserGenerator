@@ -150,19 +150,21 @@ def update_od_record(user_data):
             attribute + ": " + str(value)
 
 
-def get_plist_record(name):
+def plist_record_exists(name):
     """Description"""
-    record = name
-    return record
+
+    target = sys.argv[3]
+    path = target + "/private/var/db/dslocal/nodes/Default/users/" + name + ".plist"
+    return os.path.isfile(path)
 
 
-def create_plist_record(user_data, user_preferences):
+def create_plist_record(user_data):
     """Description"""
     print "create plist record"
     print user_data
 
 
-def update_plist_record(user_data, user_preferences):
+def update_plist_record(user_data):
     """Description"""
     print "update plist record"
     print user_data
@@ -256,6 +258,7 @@ def main():
     """Description"""
 
     if is_booted_volume():
+
         print "Target is booted volume, using OpenDirectory API methods"
 
         if not od_record_exists(USER_DATA["name"]):
@@ -267,12 +270,13 @@ def main():
 
     else:
         print "Target is not booted volume, use Property List methods"
-        record = get_plist_record(USER_DATA["name"])
 
-        if not record:
-            create_plist_record(USER_DATA, USER_PREFERENCES)
-        else:
-            update_plist_record(USER_DATA, USER_PREFERENCES)
+        if not plist_record_exists(USER_DATA["name"]):
+            print "User record '" + USER_DATA["name"] + "' does not exist"
+            create_plist_record(USER_DATA)
+
+        print "User record '" + USER_DATA["name"] + "' exists"
+        update_plist_record(USER_DATA)
 
     set_shadowhash(USER_DATA["name"], USER_DATA["ShadowHash"])
     set_admin(USER_PREFERENCES["admin"], USER_DATA["name"], USER_DATA["generateduid"])
