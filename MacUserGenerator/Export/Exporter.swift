@@ -20,128 +20,56 @@ class Exporter: NSObject {
   */
   class func createScriptAt(url: URL, documentObject: DocumentObject, options: ScriptOptions) {
     
-    let scriptURL = Bundle.main.url(forResource: "Export", withExtension: "sh")
+    let scriptURL = Bundle.main.url(forResource: "Export", withExtension: "py")
     
     do {
       var script = try String(contentsOf: scriptURL!)
-      script = script.replaceFirstOccurrence(of: "#NAME#", with: documentObject.accountName)
-      script = script.replaceFirstOccurrence(of: "#REALNAME#", with: documentObject.fullName)
-      script = script.replaceFirstOccurrence(of: "#UID#", with: documentObject.userID)
-      script = script.replaceFirstOccurrence(of: "#GID#", with: documentObject.groupID)
-      script = script.replaceFirstOccurrence(of: "#SHELL#", with: documentObject.loginShell.rawValue)
-      script = script.replaceFirstOccurrence(of: "#HINT#", with: documentObject.passwordHint)
-      
-      if documentObject.hideHomeDirectory {
-        script = script.replaceFirstOccurrence(of: "#HOME#", with: "/var/\(documentObject.accountName)")
-      }
-      else {
-        script = script.replaceFirstOccurrence(of: "#HOME#", with: documentObject.homeDirectory)
-      }
-      
-      script = script.replaceFirstOccurrence(of: "#SHADOWHASH#", with: documentObject.password.shadowHash)
-      
-      if documentObject.accountType == .Administrator {
-        script = script.replacingOccurrences(of: "###SETADMINISTRATOR###", with: "")
-      }
-      else {
-        script = script.replacePatternMatches(of: "###SETADMINISTRATOR###[\\s\\S]*###SETADMINISTRATOR###\\s", with: "")
-      }
-      
-      if documentObject.hideUserAccount {
-        script = script.replacingOccurrences(of: "###HIDEUSERACCOUNT###", with: "")
-      }
-      else {
-        script = script.replacePatternMatches(of: "###HIDEUSERACCOUNT###[\\s\\S]*###HIDEUSERACCOUNT###\\s", with: "")
-      }
-      
-      if documentObject.loginAutomatically {
-        script = script.replacingOccurrences(of: "###SETAUTOLOGIN###", with: "")
-        script = script.replaceFirstOccurrence(of: "#KCPASSWORDSTRING#", with: documentObject.password.kcpassword)
-      }
-      else {
-        script = script.replacePatternMatches(of: "###SETAUTOLOGIN###[\\s\\S]*###SETAUTOLOGIN###\\s", with: "")
-      }
-      
-      if documentObject.skipSetupAssistant {
-        script = script.replacingOccurrences(of: "###SKIPSETUPASSISTANT###", with: "")
-        
-        if documentObject.skipiCloud {
-          script = script.replacingOccurrences(of: "###SKIPICLOUD###", with: "")
-        }
-        else {
-          script = script.replacePatternMatches(of: "###SKIPICLOUD[\\s\\S]*###SKIPICLOUD###\\s", with: "")
-        }
-        
-        if documentObject.skipSiri {
-          script = script.replacingOccurrences(of: "###SKIPSIRI###", with: "")
-        }
-        else {
-          script = script.replacePatternMatches(of: "###SKIPSIRI###[\\s\\S]*###SKIPSIRI###\\s", with: "")
-        }
-        
-        if documentObject.skipTouchID {
-          script = script.replacingOccurrences(of: "###SKIPTOUCHID###", with: "")
-        }
-        else {
-          script = script.replacePatternMatches(of: "###SKIPTOUCHID###[\\s\\S]*###SKIPTOUCHID###\\s", with: "")
-        }
-        
-        if documentObject.skipAnalytics {
-          script = script.replacingOccurrences(of: "###SKIPANALYTICS###", with: "")
-        }
-        else {
-          script = script.replacePatternMatches(of: "###SKIPANALYTICS###[\\s\\S]*###SKIPANALYTICS###\\s", with: "")
-        }
-        
-        if documentObject.skipDataPrivacy {
-          script = script.replacingOccurrences(of: "###SKIPDATAPRIVACY###", with: "")
-        }
-        else {
-          script = script.replacePatternMatches(of: "###SKIPDATAPRIVACY###[\\s\\S]*###SKIPDATAPRIVACY###\\s", with: "")
-        }
-      }
-      else {
-        script = script.replacePatternMatches(of: "###SKIPSETUPASSISTANT###[\\s\\S]*###SKIPSETUPASSISTANT###\\s", with: "")
-        script = script.replacePatternMatches(of: "###SKIPICLOUD###[\\s\\S]*###SKIPICLOUD###\\s", with: "")
-        script = script.replacePatternMatches(of: "###SKIPSIRI###[\\s\\S]*###SKIPSIRI###\\s", with: "")
-        script = script.replacePatternMatches(of: "###SKIPTOUCHID###[\\s\\S]*###SKIPTOUCHID###\\s", with: "")
-        script = script.replacePatternMatches(of: "###SKIPANALYTICS###[\\s\\S]*###SKIPANALYTICS###\\s", with: "")
-        script = script.replacePatternMatches(of: "###SKIPDATAPRIVACY###[\\s\\S]*###SKIPDATAPRIVACY###\\s", with: "")
-      }
+      script = script.replacingOccurrences(of: "#NAME", with: documentObject.accountName)
+      script = script.replacingOccurrences(of: "#REALNAME", with: documentObject.fullName)
+      script = script.replacingOccurrences(of: "#UID", with: documentObject.userID)
+      script = script.replacingOccurrences(of: "#SHELL", with: documentObject.loginShell.rawValue)
+      script = script.replacingOccurrences(of: "#HINT", with: documentObject.passwordHint)
+      script = script.replacingOccurrences(of: "#HOME", with: documentObject.hideHomeDirectory ? "/private/var/\(documentObject.accountName)" : documentObject.homeDirectory)
+      script = script.replacingOccurrences(of: "#SHADOWHASH", with: documentObject.password.shadowHash)
+      script = script.replacingOccurrences(of: "#ADMIN", with: documentObject.accountType == .Administrator ? "TRUE" : "FALSE")
+      script = script.replacingOccurrences(of: "#ISHIDDEN", with: documentObject.hideUserAccount ? "TRUE" : "FALSE")
+      script = script.replacingOccurrences(of: "#AUTOLOGIN", with: documentObject.loginAutomatically ? "TRUE" : "FALSE")
+      script = script.replacingOccurrences(of: "#KCPASSWORD", with: documentObject.password.kcpassword)
+      script = script.replacingOccurrences(of: "#SKIPSETUPASSISTANT", with: documentObject.skipSetupAssistant ? "TRUE" : "FALSE")
       
       // do the picture base64 string last, as it's hella long and stuffs up the regex matching range
-      if documentObject.picture.isValid  {
-
-        if let tiff = documentObject.picture.tiffRepresentation {
-          let string = tiff.base64EncodedString()
-          
-          var firstString = ""
-          var secondString = ""
-          var thirdString = ""
-          let third = string.count / 3
-
-          let index = string.index(string.startIndex, offsetBy: third)
-          firstString = String(string[..<index])
-          let startIndex = string.index(string.startIndex, offsetBy: third)
-          let endIndex = string.index(startIndex, offsetBy: third)
-          secondString = String(string[startIndex..<endIndex])
-          thirdString = String(string[endIndex..<string.endIndex])
-
-          script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: firstString)
-          script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: secondString)
-          script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: thirdString)
-        }
-        else {
-          script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: "")
-          script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: "")
-          script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: "")
-        }
-      }
-      else {
-        script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: "")
-        script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: "")
-        script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: "")
-      }
+//      if documentObject.picture.isValid  {
+//
+//        if let tiff = documentObject.picture.tiffRepresentation {
+//          let string = tiff.base64EncodedString()
+//
+//          var firstString = ""
+//          var secondString = ""
+//          var thirdString = ""
+//          let third = string.count / 3
+//
+//          let index = string.index(string.startIndex, offsetBy: third)
+//          firstString = String(string[..<index])
+//          let startIndex = string.index(string.startIndex, offsetBy: third)
+//          let endIndex = string.index(startIndex, offsetBy: third)
+//          secondString = String(string[startIndex..<endIndex])
+//          thirdString = String(string[endIndex..<string.endIndex])
+//
+//          script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: firstString)
+//          script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: secondString)
+//          script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: thirdString)
+//        }
+//        else {
+//          script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: "")
+//          script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: "")
+//          script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: "")
+//        }
+//      }
+//      else {
+//        script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: "")
+//        script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: "")
+//        script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: "")
+//      }
     
       try script.write(to: url, atomically: true, encoding: .utf8)
         

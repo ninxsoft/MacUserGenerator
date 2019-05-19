@@ -29,7 +29,7 @@ enum ExportType: Int {
     case .Package:
       return "pkg"
     case .Script:
-      return "sh"
+      return "py"
     }
   }
 }
