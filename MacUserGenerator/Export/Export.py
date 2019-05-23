@@ -110,6 +110,8 @@ def record_exists(name):
 def create_record(user_data):
     """Description"""
 
+    print "User record '" + user_data["name"] + "' does not exist"
+
     if is_booted_volume():
         node = get_od_node()
 
@@ -152,6 +154,8 @@ def update_record(user_data):
             None
         )
 
+        print "User record '" + user_data["name"] + "' exists"
+
         if error:
             print >> sys.stderr, error
             return
@@ -179,6 +183,8 @@ def update_record(user_data):
         path = get_target() + PLIST_PATH + user_data["name"] + ".plist"
         plist = plistlib.readPlist(path)
 
+        print "User record '" + user_data["name"] + "' exists"
+
         for attribute, value in user_data.items():
 
             if attribute == "ShadowHash":
@@ -196,7 +202,7 @@ def update_record(user_data):
 def set_shadowhash(name, shadowhash):
     """Description"""
 
-    path = "/private/var/db/dslocal/nodes/Default/users/" + name + ".plist"
+    path = get_target() + PLIST_PATH + name + ".plist"
     command = "Remove :ShadowHashData:0"
     subprocess.call(["/usr/libexec/plistbuddy", "-c", command, path])
     command = "Add :ShadowHashData:0 string " + "..." + shadowhash + "..."
@@ -281,12 +287,9 @@ def main():
     """Description"""
 
     if not record_exists(USER_DATA["name"]):
-        print "User record '" + USER_DATA["name"] + "' does not exist"
         create_record(USER_DATA)
 
-    print "User record '" + USER_DATA["name"] + "' exists"
     update_record(USER_DATA)
-
     set_shadowhash(USER_DATA["name"], USER_DATA["ShadowHash"])
     set_admin(USER_PREFERENCES["admin"], USER_DATA["name"], USER_DATA["generateduid"])
     set_autologin(USER_DATA["name"], USER_PREFERENCES["kcpassword"])
