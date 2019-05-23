@@ -4,12 +4,16 @@
 
 import os
 import platform
+import plistlib
+import stat
 import subprocess
 import sys
 import uuid
 # pylint: disable=E0611
 from OpenDirectory import ODSession, ODNode, kODNodeTypeLocalNodes, kODRecordTypeUsers
 # pylint: enable=E0611
+
+PLIST_PATH = "/private/var/db/dslocal/nodes/Default/users/"
 
 USER_DATA = {
     "authentication_authority": ";ShadowHash;HASHLIST:<SALTED-SHA512-PBKDF2>",
@@ -38,6 +42,7 @@ USER_PREFERENCES = {
     "skipsetupassistant": "#SKIPSETUPASSISTANT"
 }
 
+
 def is_booted_volume():
     """Description"""
 
@@ -47,6 +52,14 @@ def is_booted_volume():
     target = sys.argv[3]
     local_disk = "/"
     return target is local_disk
+
+
+def get_target():
+    """Description"""
+
+    target = sys.argv[3]
+    local_disk = "/"
+    return "" if target == local_disk else target
 
 
 def get_od_node():
@@ -68,77 +81,45 @@ def get_od_node():
     return node
 
 
-def od_record_exists(name):
+def record_exists(name):
     """Description"""
 
-    node = get_od_node()
+    if is_booted_volume():
+        node = get_od_node()
 
-    if not node:
-        return False
+        if not node:
+            return False
 
-    record, error = node.recordWithRecordType_name_attributes_error_(
-        kODRecordTypeUsers,
-        name,
-        None,
-        None
-    )
+        record, error = node.recordWithRecordType_name_attributes_error_(
+            kODRecordTypeUsers,
+            name,
+            None,
+            None
+        )
 
-    if error:
-        print >> sys.stderr, error
-        return False
+        if error:
+            print >> sys.stderr, error
+            return False
 
-    return record is not None
+        return record is not None
+    else:
+        path = get_target() + PLIST_PATH + name + ".plist"
+        return os.path.isfile(path)
 
 
-def create_od_record(user_data):
+def create_record(user_data):
     """Description"""
 
-    node = get_od_node()
+    if is_booted_volume():
+        node = get_od_node()
 
-    if not node:
-        return
+        if not node:
+            return
 
-    record, error = node.createRecordWithRecordType_name_attributes_error_(
-        kODRecordTypeUsers,
-        user_data["name"],
-        None,
-        None
-    )
-
-    if error:
-        print >> sys.stderr, error
-        return
-
-    print "User record '" + user_data["name"] + "' created"
-
-
-def update_od_record(user_data):
-    """Description"""
-
-    node = get_od_node()
-
-    if not node:
-        return
-
-    record, error = node.recordWithRecordType_name_attributes_error_(
-        kODRecordTypeUsers,
-        user_data["name"],
-        None,
-        None
-    )
-
-    if error:
-        print >> sys.stderr, error
-        return
-
-    for attribute, value in user_data.items():
-
-        if attribute == "ShadowHash":
-            continue
-
-        success, error = record.setValue_forAttribute_error_(
-            value,
-            attribute,
+        record, error = node.createRecordWithRecordType_name_attributes_error_(
+            kODRecordTypeUsers,
+            user_data["name"],
+            None,
             None
         )
 
@@ -146,28 +127,70 @@ def update_od_record(user_data):
             print >> sys.stderr, error
             return
 
-        print "User record '" + user_data["name"] + "' updated attribute " + \
-            attribute + ": " + str(value)
+        print "User record '" + user_data["name"] + "' created via Open Directory"
+    else:
+        dictionary = {"name": user_data["name"]}
+        path = get_target() + PLIST_PATH + user_data["name"] + ".plist"
+        plistlib.writePlist(dictionary, path)
+        os.chmod(path, stat.S_IRUSR | stat.S_IWUSR)
+        print "User record '" + user_data["name"] + "' created via Property List"
 
 
-def plist_record_exists(name):
+def update_record(user_data):
     """Description"""
 
-    target = sys.argv[3]
-    path = target + "/private/var/db/dslocal/nodes/Default/users/" + name + ".plist"
-    return os.path.isfile(path)
+    if is_booted_volume():
+        node = get_od_node()
 
+        if not node:
+            return
 
-def create_plist_record(user_data):
-    """Description"""
-    print "create plist record"
-    print user_data
+        record, error = node.recordWithRecordType_name_attributes_error_(
+            kODRecordTypeUsers,
+            user_data["name"],
+            None,
+            None
+        )
 
+        if error:
+            print >> sys.stderr, error
+            return
 
-def update_plist_record(user_data):
-    """Description"""
-    print "update plist record"
-    print user_data
+        for attribute, value in user_data.items():
+
+            if attribute == "ShadowHash":
+                continue
+
+            success, error = record.setValue_forAttribute_error_(
+                value,
+                attribute,
+                None
+            )
+
+            if error:
+                print >> sys.stderr, error
+                return
+
+            print "User record '" + user_data["name"] + "' updated attribute " + \
+                attribute + ": " + str(value)
+
+        print "User record '" + user_data["name"] + "' updated via Open Directory"
+    else:
+        path = get_target() + PLIST_PATH + user_data["name"] + ".plist"
+        plist = plistlib.readPlist(path)
+
+        for attribute, value in user_data.items():
+
+            if attribute == "ShadowHash":
+                continue
+
+            plist[attribute] = value
+
+            print "User record '" + user_data["name"] + "' updated attribute " + \
+                attribute + ": " + str(value)
+
+        plistlib.writePlist(plist, path)
+        print "User record '" + user_data["name"] + "' updated via Property List"
 
 
 def set_shadowhash(name, shadowhash):
@@ -257,26 +280,12 @@ def restart_directory_services():
 def main():
     """Description"""
 
-    if is_booted_volume():
+    if not record_exists(USER_DATA["name"]):
+        print "User record '" + USER_DATA["name"] + "' does not exist"
+        create_record(USER_DATA)
 
-        print "Target is booted volume, using OpenDirectory API methods"
-
-        if not od_record_exists(USER_DATA["name"]):
-            print "User record '" + USER_DATA["name"] + "' does not exist"
-            create_od_record(USER_DATA)
-
-        print "User record '" + USER_DATA["name"] + "' exists"
-        update_od_record(USER_DATA)
-
-    else:
-        print "Target is not booted volume, use Property List methods"
-
-        if not plist_record_exists(USER_DATA["name"]):
-            print "User record '" + USER_DATA["name"] + "' does not exist"
-            create_plist_record(USER_DATA)
-
-        print "User record '" + USER_DATA["name"] + "' exists"
-        update_plist_record(USER_DATA)
+    print "User record '" + USER_DATA["name"] + "' exists"
+    update_record(USER_DATA)
 
     set_shadowhash(USER_DATA["name"], USER_DATA["ShadowHash"])
     set_admin(USER_PREFERENCES["admin"], USER_DATA["name"], USER_DATA["generateduid"])
