@@ -37,53 +37,13 @@ class Exporter: NSObject {
       script = script.replacingOccurrences(of: "#KCPASSWORD", with: documentObject.loginAutomatically ? documentObject.password.kcpassword : "")
       script = script.replacingOccurrences(of: "#SKIPSETUPASSISTANT", with: documentObject.skipSetupAssistant ? "TRUE" : "FALSE")
       
-      // do the picture base64 string last, as it's hella long and stuffs up the regex matching range
-//      if documentObject.picture.isValid  {
-//
-//        if let tiff = documentObject.picture.tiffRepresentation {
-//          let string = tiff.base64EncodedString()
-//
-//          var firstString = ""
-//          var secondString = ""
-//          var thirdString = ""
-//          let third = string.count / 3
-//
-//          let index = string.index(string.startIndex, offsetBy: third)
-//          firstString = String(string[..<index])
-//          let startIndex = string.index(string.startIndex, offsetBy: third)
-//          let endIndex = string.index(startIndex, offsetBy: third)
-//          secondString = String(string[startIndex..<endIndex])
-//          thirdString = String(string[endIndex..<string.endIndex])
-//
-//          script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: firstString)
-//          script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: secondString)
-//          script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: thirdString)
-//        }
-//        else {
-//          script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: "")
-//          script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: "")
-//          script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: "")
-//        }
-//      }
-//      else {
-//        script = script.replaceFirstOccurrence(of: "#FIRSTCHUNK#", with: "")
-//        script = script.replaceFirstOccurrence(of: "#SECONDCHUNK#", with: "")
-//        script = script.replaceFirstOccurrence(of: "#THIRDCHUNK#", with: "")
-//      }
+      if documentObject.picture.isValid,
+        let tiff = documentObject.picture.tiffRepresentation {
+        let string = tiff.base64EncodedString()
+        script = script.replacingOccurrences(of: "#JPEGPHOTO", with: string)
+      }
     
       try script.write(to: url, atomically: true, encoding: .utf8)
-        
-      // make the script executable
-      let command = "chmod +x \(url.path)"
-      let task = Process()
-      let outputPipe = Pipe()
-      let errorPipe = Pipe()
-      task.standardOutput = outputPipe
-      task.standardError = errorPipe
-      task.launchPath = "/bin/bash"
-      task.arguments = ["-l", "-c", command]
-      task.launch()
-      task.waitUntilExit()
     }
     catch {
       print(error)
