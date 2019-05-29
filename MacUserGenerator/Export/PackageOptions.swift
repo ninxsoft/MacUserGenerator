@@ -12,4 +12,4 @@ class PackageOptions: NSObject {
   var identifier = ""
   var version = ""
   var certificate = ""
-} 
+}

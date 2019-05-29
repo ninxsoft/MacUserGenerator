@@ -13,22 +13,22 @@ class PictureView: NSView {
   var imageLayer = CALayer()
   var shapeLayer = CAShapeLayer()
   var textLayer = CATextLayer()
-  
+
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-    
+
     // layer
     self.wantsLayer = true
     self.layer?.borderWidth = 0.5
     self.layer?.borderColor = NSColor.systemGray.cgColor
     self.layer?.cornerRadius = self.frame.width / 2
     self.layer?.masksToBounds = true
-    
+
     // image layer
     imageLayer.frame = NSRect(origin: CGPoint.zero, size: frame.size)
     imageLayer.contentsGravity = .resizeAspect
     self.layer?.addSublayer(imageLayer)
-    
+
     // shape layer
     let path = NSBezierPath(rect: self.bounds)
     shapeLayer.path = path.CGPath
@@ -36,10 +36,10 @@ class PictureView: NSView {
     shapeLayer.opacity = 0.25
     shapeLayer.isHidden = true
     self.layer?.addSublayer(shapeLayer)
-    
+
     // text layer
     let attributes = [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 14.0),
-                      NSAttributedString.Key.foregroundColor: NSColor.white.cgColor] as [NSAttributedString.Key : Any]
+                      NSAttributedString.Key.foregroundColor: NSColor.white.cgColor] as [NSAttributedString.Key: Any]
     let attributedString = NSAttributedString(string: "Edit", attributes: attributes)
     textLayer.string = attributedString
     textLayer.backgroundColor = NSColor.black.cgColor
@@ -51,78 +51,78 @@ class PictureView: NSView {
     textLayer.frame = textRect
     textLayer.isHidden = true
     self.layer?.addSublayer(textLayer)
-    
+
     // tracking
     let trackingRect = NSRect(origin: CGPoint.zero, size: self.frame.size)
     let options: NSTrackingArea.Options = [.activeInKeyWindow, .mouseEnteredAndExited, .mouseMoved]
     let trackingArea = NSTrackingArea(rect: trackingRect, options: options, owner: self, userInfo: nil)
     self.addTrackingArea(trackingArea)
-    
+
     // dragging
     if #available(OSX 10.13, *) {
       self.registerForDraggedTypes([.URL])
     }
   }
-  
+
   override func mouseEntered(with event: NSEvent) {
     shapeLayer.isHidden = false
     textLayer.isHidden = false
   }
-  
+
   override func mouseExited(with event: NSEvent) {
     shapeLayer.isHidden = true
     textLayer.isHidden = true
   }
-  
+
   override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
-    
+
     let pasteboard = sender.draggingPasteboard
     let url = NSURL(from: pasteboard)
-    
+
     guard let pathExtension = url?.pathExtension else {
       return .delete
     }
-    
+
     return NSImage.validPathExtensions.contains(pathExtension) ? .copy : .delete
   }
-  
+
   override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
 
     let pasteboard = sender.draggingPasteboard
     let url = NSURL(from: pasteboard)
-    
+
     guard let pathExtension = url?.pathExtension else {
       return false
     }
-    
+
     return NSImage.validPathExtensions.contains(pathExtension)
   }
-  
+
   override func concludeDragOperation(_ sender: NSDraggingInfo?) {
-    
+
     guard let pasteboard = sender?.draggingPasteboard else {
       return
     }
-    
+
     guard let url = NSURL(from: pasteboard) else {
       return
     }
-    
+
     _ = validateAndUpdateImageFromURL(url as URL)
   }
-  
+
   /**
    Validates and updates the image for the picture view.
    - Parameters:
      - url: The URL of the image.
   */
   func validateAndUpdateImageFromURL(_ url: URL) -> Bool {
-    
+
     guard let viewController = window?.contentViewController as? ViewController,
       let image = NSImage(contentsOf: url) else {
       return false
     }
-    
+
     let size = NSSize(width: 128, height: 128)
     let resizedImage = image.resizedImage(with: size)
     imageLayer.contents = resizedImage

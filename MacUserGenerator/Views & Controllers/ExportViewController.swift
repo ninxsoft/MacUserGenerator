@@ -19,22 +19,22 @@ class ExportViewController: NSViewController {
   @IBOutlet var cancelButton: NSButton?
   @IBOutlet var nextButton: NSButton?
   var certificates = [String]()
-  var exportType = ExportType.Package
+  var exportType = ExportType.package
   var packageOptions = PackageOptions()
   var scriptOptions = ScriptOptions()
-  
+
   override func viewWillAppear() {
     certificates = getCertificates()
     populateCertificatePopupButton(with: certificates)
   }
-  
+
   /**
    Returns an array of strings containing any Developer Installer Certificates found on the machine.
   */
   private func getCertificates() -> [String] {
-    
+
     var certificates = [String]()
-    
+
     let command = "security find-identity -v | grep \"Developer ID Installer:\""
     let task = Process()
     let outputPipe = Pipe()
@@ -45,24 +45,24 @@ class ExportViewController: NSViewController {
     task.arguments = ["-l", "-c", command]
     task.launch()
     task.waitUntilExit()
-    
+
     let data = outputPipe.fileHandleForReading.readDataToEndOfFile()
-  
+
     guard let string = String(data: data, encoding: .utf8) else {
       return certificates
     }
 
-    let strings = string.split{$0 == "\n"}.map(String.init)
+    let strings = string.split { $0 == "\n" }.map(String.init)
 
     for string in strings {
       // strip out the leading whitespace and the uuid
       let certificate = string.replacePatternMatches(of: "^.*[0-9A-F]{40} ", with: "").replacingOccurrences(of: "\"", with: "")
       certificates.append(certificate)
     }
-  
+
     return certificates
   }
-  
+
   /**
    Populates the NSPopupButton with items containing Developer Installer Certificate names.
    - Parameters:
@@ -74,91 +74,88 @@ class ExportViewController: NSViewController {
       packageCertificatesPopUpButton?.addItem(withTitle: "No certificates found")
       return
     }
-    
+
     for certificate in certificates {
-      
+
       packageCertificatesPopUpButton?.addItem(withTitle: certificate)
-        
+
       if let image = NSImage(named: "Certificate"),
         let item = self.packageCertificatesPopUpButton?.itemArray.last {
         item.image = image
       }
     }
-    
+
     if let title = packageCertificatesPopUpButton?.itemTitles[2] {
       packageCertificatesPopUpButton?.selectItem(withTitle: title)
     }
   }
-  
+
   /**
    Selects the Tab Bar view that was clicked. Also unselects all other Tab Bar Views.
    - Parameters:
    - sender: The NSClickGestureRecognizer that was clicked.
   */
   @IBAction func exportTabBarViewClicked(sender: NSClickGestureRecognizer) {
-    
+
     for (index, tabBarView) in [packageTabBarView, scriptTabBarView].enumerated() {
-      
+
       tabBarView?.selected = sender.view == tabBarView
       tabBarView?.needsDisplay = true
-      
+
       if sender.view == tabBarView {
-        
+
         if let type = ExportType(rawValue: index) {
           exportType = type
         }
-        
+
         tabView?.selectTabViewItem(at: index)
       }
     }
-    
+
     validateNextButton()
   }
-  
+
   func controlTextDidChange(_ obj: Notification) {
     validateNextButton()
   }
-  
+
   /**
    Validates the Next button based on the options selected in the Tab Views.
   */
   private func validateNextButton() {
-    
+
     switch exportType {
-    case .Package:
+    case .package:
       // if export type is package, ensure package identifier and version fields are not empty
       nextButton?.isEnabled = !(packageIdentifierTextField?.stringValue.isEmpty)! && !(packageVersionTextField?.stringValue.isEmpty)!
-      break
-    case .Script:
+    case .script:
       nextButton?.isEnabled = true
-      break
     }
   }
-  
+
   /**
    Closes the Export Window, by selecting either the Cancel or Next... buttons
    - Parameters:
    - sender: The button that was clicked.
   */
   @IBAction func buttonClicked(sender: NSButton) {
-      
+
     switch exportType {
-    case .Package:
+    case .package:
       packageOptions.identifier = (packageIdentifierTextField?.stringValue)!
       packageOptions.version = (packageVersionTextField?.stringValue)!
-      
+
       if let certificate = packageCertificatesPopUpButton?.titleOfSelectedItem {
-       
+
         if certificates.contains(certificate) {
           packageOptions.certificate = certificate
         }
       }
-      break
-    case .Script:
+    case .script:
       // script options go here
       break
     }
-    
+
     let returnCode: NSApplication.ModalResponse = sender == cancelButton ? .cancel : .OK
     view.window?.sheetParent?.endSheet(view.window!, returnCode: returnCode)
   }

@@ -23,17 +23,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
    Cleans up any temporary files or directories used when creating packages.
   */
   private func cleanupTemporaryPackageFiles() {
-    
+
     let path = NSTemporaryDirectory() + "Packages"
-    
+
     guard FileManager.default.fileExists(atPath: path) else {
       return
     }
-    
+
     do {
       try FileManager.default.removeItem(atPath: path)
-    }
-    catch {
+    } catch {
       print(error)
     }
   }

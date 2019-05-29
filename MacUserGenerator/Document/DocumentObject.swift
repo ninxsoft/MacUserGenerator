@@ -11,37 +11,37 @@ import Cocoa
 class DocumentObject: NSObject {
 
   enum Key: String {
-    case AccountType
-    case FullName
-    case AccountName
-    case Picture
-    case Password
-    case Verify
-    case PasswordHint
-    case UserID
-    case LoginShell
-    case HomeDirectory
-    case HideUserAccount
-    case HideHomeDirectory
-    case LoginAutomatically
-    case SkipSetupAssistant
+    case accountType
+    case fullName
+    case accountName
+    case picture
+    case password
+    case verify
+    case passwordHint
+    case userID
+    case loginShell
+    case homeDirectory
+    case hideUserAccount
+    case hideHomeDirectory
+    case loginAutomatically
+    case skipSetupAssistant
   }
-  
+
   enum AccountType: String {
-    case Administrator
-    case Standard
+    case administrator
+    case standard
   }
-  
+
   enum LoginShell: String {
     case bash = "/bin/bash"
     case tcsh = "/bin/tcsh"
-    case sh = "/bin/sh"
+    case shell = "/bin/sh"
     case csh = "/bin/csh"
     case zsh = "/bin/zsh"
   }
 
   // document defaults
-  var accountType = AccountType.Administrator
+  var accountType = AccountType.administrator
   var fullName = ""
   var accountName = ""
   var picture = NSImage()
@@ -55,82 +55,81 @@ class DocumentObject: NSObject {
   var hideHomeDirectory = false
   var loginAutomatically = false
   var skipSetupAssistant = false
-  
+
   convenience init(dictionary: NSDictionary) {
     self.init()
-    
-    if let string = dictionary[Key.AccountType.rawValue] as? String,
+
+    if let string = dictionary[Key.accountType.rawValue] as? String,
       let type = AccountType(rawValue: string) {
       accountType = type
     }
-    
-    if let string = dictionary[Key.FullName.rawValue] as? String {
+
+    if let string = dictionary[Key.fullName.rawValue] as? String {
       fullName = string
     }
-    
-    if let string = dictionary[Key.AccountName.rawValue] as? String {
+
+    if let string = dictionary[Key.accountName.rawValue] as? String {
       accountName = string
     }
-          
-    if let data = dictionary[Key.Picture.rawValue] as? Data,
+
+    if let data = dictionary[Key.picture.rawValue] as? Data,
       let image = NSImage(data: data) {
       picture = image
-    }
-    else if let image = NSImage(named: "Picture") {
+    } else if let image = NSImage(named: "Picture") {
       picture = image
     }
-    
-    if let string = dictionary[Key.PasswordHint.rawValue] as? String {
+
+    if let string = dictionary[Key.passwordHint.rawValue] as? String {
       passwordHint = string
     }
-    
-    if let string = dictionary[Key.UserID.rawValue] as? String {
+
+    if let string = dictionary[Key.userID.rawValue] as? String {
       userID = string
     }
-    
-    if let string = dictionary[Key.LoginShell.rawValue] as? String,
+
+    if let string = dictionary[Key.loginShell.rawValue] as? String,
       let shell = LoginShell(rawValue: string) {
       loginShell = shell
     }
-    
-    if let string = dictionary[Key.HomeDirectory.rawValue] as? String {
+
+    if let string = dictionary[Key.homeDirectory.rawValue] as? String {
       homeDirectory = string
     }
-    
-    if let boolean = dictionary[Key.HideUserAccount.rawValue] as? Bool {
+
+    if let boolean = dictionary[Key.hideUserAccount.rawValue] as? Bool {
       hideUserAccount = boolean
     }
-    
-    if let boolean = dictionary[Key.HideHomeDirectory.rawValue] as? Bool {
+
+    if let boolean = dictionary[Key.hideHomeDirectory.rawValue] as? Bool {
       hideHomeDirectory = boolean
     }
-    
-    if let boolean = dictionary[Key.LoginAutomatically.rawValue] as? Bool {
+
+    if let boolean = dictionary[Key.loginAutomatically.rawValue] as? Bool {
       loginAutomatically = boolean
     }
-    
-    if let boolean = dictionary[Key.SkipSetupAssistant.rawValue] as? Bool {
+
+    if let boolean = dictionary[Key.skipSetupAssistant.rawValue] as? Bool {
       skipSetupAssistant = boolean
     }
   }
-  
+
   /**
    NSDictionary representation of document object
   */
   var dictionary: NSDictionary {
     let dictionary = NSMutableDictionary()
-    dictionary[Key.AccountType.rawValue] = accountType.rawValue
-    dictionary[Key.FullName.rawValue] = fullName
-    dictionary[Key.AccountName.rawValue] = accountName
-    dictionary[Key.Picture.rawValue] = picture.isValid ? picture.tiffRepresentation : nil
-    dictionary[Key.PasswordHint.rawValue] = passwordHint
-    dictionary[Key.UserID.rawValue] = userID
-    dictionary[Key.LoginShell.rawValue] = loginShell.rawValue
-    dictionary[Key.HomeDirectory.rawValue] = homeDirectory
-    dictionary[Key.HideUserAccount.rawValue] = hideUserAccount
-    dictionary[Key.HideHomeDirectory.rawValue] = hideHomeDirectory
-    dictionary[Key.LoginAutomatically.rawValue] = loginAutomatically
-    dictionary[Key.SkipSetupAssistant.rawValue] = skipSetupAssistant
+    dictionary[Key.accountType.rawValue] = accountType.rawValue
+    dictionary[Key.fullName.rawValue] = fullName
+    dictionary[Key.accountName.rawValue] = accountName
+    dictionary[Key.picture.rawValue] = picture.isValid ? picture.tiffRepresentation : nil
+    dictionary[Key.passwordHint.rawValue] = passwordHint
+    dictionary[Key.userID.rawValue] = userID
+    dictionary[Key.loginShell.rawValue] = loginShell.rawValue
+    dictionary[Key.homeDirectory.rawValue] = homeDirectory
+    dictionary[Key.hideUserAccount.rawValue] = hideUserAccount
+    dictionary[Key.hideHomeDirectory.rawValue] = hideHomeDirectory
+    dictionary[Key.loginAutomatically.rawValue] = loginAutomatically
+    dictionary[Key.skipSetupAssistant.rawValue] = skipSetupAssistant
     return dictionary
   }
 }

@@ -10,25 +10,25 @@ import Cocoa
 
 enum ExportType: Int {
 
-  case Package
-  case Script
+  case package
+  case script
 
   var title: String {
 
     switch self {
-    case .Package:
+    case .package:
       return "Package"
-    case .Script:
+    case .script:
       return "Script"
     }
   }
 
   var fileExtension: String {
-    
+
     switch self {
-    case .Package:
+    case .package:
       return "pkg"
-    case .Script:
+    case .script:
       return "py"
     }
   }

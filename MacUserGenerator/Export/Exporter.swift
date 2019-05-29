@@ -19,9 +19,9 @@ class Exporter: NSObject {
      - options: Any script options that are specified when exporting.
   */
   class func createScriptAt(url: URL, documentObject: DocumentObject, options: ScriptOptions) {
-    
+
     let scriptURL = Bundle.main.url(forResource: "Export", withExtension: "py")
-    
+
     do {
       var script = try String(contentsOf: scriptURL!)
       script = script.replacingOccurrences(of: "#NAME", with: documentObject.accountName)
@@ -30,26 +30,37 @@ class Exporter: NSObject {
       script = script.replacingOccurrences(of: "#SHELL", with: documentObject.loginShell.rawValue)
       script = script.replacingOccurrences(of: "#HINT", with: documentObject.passwordHint)
       script = script.replacingOccurrences(of: "#HOME", with: documentObject.hideHomeDirectory ? "/private/var/\(documentObject.accountName)" : documentObject.homeDirectory)
-      script = script.replacingOccurrences(of: "#SHADOWHASH", with: documentObject.password.shadowHash)
-      script = script.replacingOccurrences(of: "#ADMIN", with: documentObject.accountType == .Administrator ? "TRUE" : "FALSE")
+      script = script.replacingOccurrences(of: "#SHADOWHASHDATA", with: documentObject.password.shadowHash)
+      script = script.replacingOccurrences(of: "#ADMIN", with: documentObject.accountType == .administrator ? "TRUE" : "FALSE")
       script = script.replacingOccurrences(of: "#ISHIDDEN", with: documentObject.hideUserAccount ? "TRUE" : "FALSE")
       script = script.replacingOccurrences(of: "#AUTOLOGIN", with: documentObject.loginAutomatically ? "TRUE" : "FALSE")
       script = script.replacingOccurrences(of: "#KCPASSWORD", with: documentObject.loginAutomatically ? documentObject.password.kcpassword : "")
       script = script.replacingOccurrences(of: "#SKIPSETUPASSISTANT", with: documentObject.skipSetupAssistant ? "TRUE" : "FALSE")
-      
+
       if documentObject.picture.isValid,
         let tiff = documentObject.picture.tiffRepresentation {
         let string = tiff.base64EncodedString()
         script = script.replacingOccurrences(of: "#JPEGPHOTO", with: string)
       }
-    
+
       try script.write(to: url, atomically: true, encoding: .utf8)
-    }
-    catch {
+
+      // make the script executable
+      let command = "chmod +x \(url.path)"
+      let task = Process()
+      let outputPipe = Pipe()
+      let errorPipe = Pipe()
+      task.standardOutput = outputPipe
+      task.standardError = errorPipe
+      task.launchPath = "/bin/bash"
+      task.arguments = ["-l", "-c", command]
+      task.launch()
+      task.waitUntilExit()
+    } catch {
       print(error)
     }
   }
-  
+
   /**
    Creates a package at the specified url, using the provided document object and any options that are specified.
    - parameters:
@@ -58,7 +69,7 @@ class Exporter: NSObject {
      - options: Any package options that are specified when exporting.
    */
   class func createPackageAt(url: URL, documentObject: DocumentObject, options: PackageOptions) {
-    
+
     let packagesPath = "\(NSTemporaryDirectory())/Packages"
     let packagePath = "\(packagesPath)/\(options.identifier.replacingOccurrences(of: ".", with: ""))"
     let packageURL = URL(fileURLWithPath: "\(packagePath)/\(url.lastPathComponent)")
@@ -66,12 +77,12 @@ class Exporter: NSObject {
     let scriptsURL = URL(fileURLWithPath: scriptsPath, isDirectory: true)
     let scriptPath = "\(scriptsPath)/postinstall"
     let scriptURL = URL(fileURLWithPath: scriptPath, isDirectory: false)
-    
+
     do {
       try FileManager.default.createDirectory(at: scriptsURL,
                                               withIntermediateDirectories: true,
                                               attributes: nil)
-      
+
       createScriptAt(url: scriptURL, documentObject: documentObject, options: ScriptOptions())
       buildPackage(identifier: options.identifier,
                    version: options.version,
@@ -79,12 +90,11 @@ class Exporter: NSObject {
                    certificate: options.certificate,
                    fromURL: packageURL,
                    toURL: url)
-    }
-    catch {
+    } catch {
       print(error)
     }
   }
-  
+
   /**
    Builds a package with the provided options in a temporary location,
    - parameters:
@@ -96,14 +106,14 @@ class Exporter: NSObject {
      - toURL: The destination url location of the package.
    */
   private static func buildPackage(identifier: String, version: String, scripts: String, certificate: String, fromURL: URL, toURL: URL) {
-    
+
     let command = "pkgbuild --identifier \(identifier)" +
                           " --version \(version)" +
                           " --nopayload --scripts \(scripts) " +
                           (certificate.isEmpty ? "" : "--sign \"\(certificate)\"") +
                           " --timestamp=none" +
                           " \(fromURL.path)"
-    
+
     DispatchQueue.global(qos: .background).async { () -> Void in
 
       let task = Process()
@@ -114,7 +124,7 @@ class Exporter: NSObject {
       task.launchPath = "/bin/bash"
       task.arguments = ["-l", "-c", command]
       task.terminationHandler = { process in
-        
+
 //        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
 //
 //        if let string = String(data: outputData, encoding: .utf8) {
@@ -126,16 +136,15 @@ class Exporter: NSObject {
 //        if let string = String(data: errorData, encoding: .utf8) {
 //          print("ERROR: \(string)")
 //        }
-        
+
         DispatchQueue.main.async {
-          
+
           do {
             // overwrite the destination package, if required
             let _ = try FileManager.default.replaceItemAt(toURL, withItemAt: fromURL)
             // delete the temporary package, if required
             try FileManager.default.removeItem(atPath: fromURL.deletingLastPathComponent().path)
-          }
-          catch {
+          } catch {
             print(error)
           }
         }

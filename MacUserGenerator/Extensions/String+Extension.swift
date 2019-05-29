@@ -44,18 +44,17 @@ extension String {
    A boolean value indicating if the provided string is a valid pattern (regex).
   */
   private func isValidWithPattern(_ pattern: String) -> Bool {
-    
+
     do {
       let regex = try NSRegularExpression(pattern: pattern, options: [])
       let length = self.distance(from: self.startIndex, to: self.endIndex)
       let matches = regex.matches(in: self, options: [], range: NSRange(location: 0, length: length))
       return !matches.isEmpty
-    }
-    catch {
+    } catch {
       return false
     }
   }
-  
+
   /**
    Returns a string replacing all matches of a pattern string with a given string.
    - Parameters:
@@ -63,37 +62,36 @@ extension String {
      - newString: The substring to replace all matches with.
   */
   func replacePatternMatches(of pattern: String, with newString: String) -> String {
-  
+
     let distance = self.distance(from: self.startIndex, to: self.endIndex)
-    
+
     do {
       let pattern = try NSRegularExpression(pattern: pattern, options: [])
       let range = NSRange(location: 0, length: distance)
       return pattern.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: newString)
-    }
-    catch {
+    } catch {
       return self
     }
   }
-  
+
   /**
    Converts the provided string to a valid account name (shortname) string.
   */
   var convertedToAccountName: String {
     return self.replacePatternMatches(of: " ", with: "").lowercased()
   }
-  
+
   /**
    Converts the provided string to a base64 encoded shadow hash, based on PBKDF2.
   */
   var shadowHash: String {
-    
+
     let algorithm = CCPBKDFAlgorithm(kCCPBKDF2)
-    
+
     guard let passwordData = self.data(using: .utf8) else {
       return ""
     }
-    
+
     let password = [UInt8](passwordData).map { Int8(bitPattern: $0) }
     let passwordLen = password.count
     let saltString = String.randomSalt()
@@ -105,13 +103,13 @@ extension String {
     var derivedKey = [UInt8](repeating: 0, count: 128)
     let derivedKeyLen = derivedKey.count
     let status = CCKeyDerivationPBKDF(algorithm, password, passwordLen, salt, saltLen, prf, rounds, &derivedKey, derivedKeyLen)
-    
+
     guard status == 0 else {
       return ""
     }
-    
+
     let entropyData = Data(bytes: derivedKey, count: derivedKey.count)
-    
+
     let string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                  "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" +
                  "<plist version=\"1.0\">" +
@@ -136,38 +134,38 @@ extension String {
 
     return string
   }
-  
+
   /**
    Generates a random 64 character hex salt string
   */
   static func randomSalt() -> String {
-    
+
     let characters = "0123456789abcdef"
     let length = UInt32(characters.count)
     var string = ""
-    
+
     for _ in 0..<64 {
       let rand = Int(arc4random_uniform(length))
       let index = characters.index(characters.startIndex, offsetBy: rand)
       let character = characters[index]
-      string = string + String(character)
+      string += String(character)
     }
-    
+
     return string
   }
-  
+
   /**
    Converts the provided string to a base64 encoded kcpassword
   */
   var kcpassword: String {
-    
-    let characters = self.utf8.map{ UInt8($0) }
+
+    let characters = self.utf8.map { UInt8($0) }
     let keys: [UInt8] = [125, 137, 82, 35, 210, 188, 221, 234, 163, 185, 31]
     var xors = [UInt8]()
-    
+
     // xor each byte of the password
-    for i in 0..<characters.count {
-      let xor = characters[i] ^ keys[i % 11]
+    for index in 0..<characters.count {
+      let xor = characters[index] ^ keys[index % 11]
       xors.append(xor)
     }
 
@@ -178,7 +176,7 @@ extension String {
       let xor = character ^ key
       xors.append(xor)
     }
-    
+
     let data = NSData(bytes: &xors, length: xors.count)
     let string = data.base64EncodedString(options: .lineLength64Characters)
     return string

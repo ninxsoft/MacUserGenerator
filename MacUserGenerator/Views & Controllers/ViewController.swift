@@ -37,10 +37,10 @@ class ViewController: NSViewController {
   @IBOutlet var exportButton: NSButton?
   @IBOutlet var helpButton: NSButton?
   var documentObject = DocumentObject()
-  
+
   override func viewDidAppear() {
-    administratorButton?.state = documentObject.accountType == .Administrator ? .on : .off
-    standardButton?.state = documentObject.accountType == .Standard ? .on : .off
+    administratorButton?.state = documentObject.accountType == .administrator ? .on : .off
+    standardButton?.state = documentObject.accountType == .standard ? .on : .off
     fullNameTextField?.stringValue = documentObject.fullName
     accountNameTextField?.stringValue = documentObject.accountName
     pictureView?.imageLayer.contents = documentObject.picture
@@ -50,7 +50,7 @@ class ViewController: NSViewController {
     userIDTextField?.stringValue = documentObject.userID
     bashButton?.state = documentObject.loginShell == .bash ? .on : .off
     tcshButton?.state = documentObject.loginShell == .tcsh ? .on : .off
-    shButton?.state = documentObject.loginShell == .sh ? .on : .off
+    shButton?.state = documentObject.loginShell == .shell ? .on : .off
     cshButton?.state = documentObject.loginShell == .csh ? .on : .off
     zshButton?.state = documentObject.loginShell == .zsh ? .on : .off
     homeDirectoryTextField?.stringValue = documentObject.homeDirectory
@@ -60,14 +60,14 @@ class ViewController: NSViewController {
     skipSetupAssistantCheckbox?.state = documentObject.skipSetupAssistant ? .on : .off
     validateExportButton()
   }
-  
+
   /**
    Pulls down an NSOpenPanel to select an image for the picture view.
    - Parameters:
      - sender: The NSClickGestureRecognizer that was clicked.
   */
   @IBAction func pictureViewClicked(sender: NSClickGestureRecognizer) {
-    
+
     let panel = NSOpenPanel()
     panel.canChooseFiles = true
     panel.canChooseDirectories = false
@@ -75,17 +75,17 @@ class ViewController: NSViewController {
     panel.allowsMultipleSelection = false
     panel.canCreateDirectories = false
     panel.allowedFileTypes = NSImage.validPathExtensions
-    
+
     panel.beginSheetModal(for: view.window!, completionHandler: { response -> Void in
-      
+
       guard response == .OK else {
         return
       }
-      
+
       guard let url = panel.url else {
         return
       }
-        
+
       guard self.pictureView?.validateAndUpdateImageFromURL(url) == true else {
         return
       }
@@ -94,21 +94,21 @@ class ViewController: NSViewController {
       self.validateExportButton()
     })
   }
-  
+
   /**
    Invokes the action associated with the button that was clicked.
    - Parameters:
      - sender: The NSButton that was clicked.
   */
   @IBAction func buttonClicked(sender: NSButton) {
-    
+
     if sender == administratorButton {
-      documentObject.accountType = .Administrator
+      documentObject.accountType = .administrator
       documentHasBeenEdited()
     }
-    
+
     if sender == standardButton {
-      documentObject.accountType = .Standard
+      documentObject.accountType = .standard
       documentHasBeenEdited()
     }
 
@@ -116,40 +116,40 @@ class ViewController: NSViewController {
       documentObject.loginShell = .bash
       documentHasBeenEdited()
     }
-    
+
     if sender == tcshButton {
       documentObject.loginShell = .tcsh
       documentHasBeenEdited()
     }
-    
+
     if sender == shButton {
-      documentObject.loginShell = .sh
+      documentObject.loginShell = .shell
       documentHasBeenEdited()
     }
-    
+
     if sender == cshButton {
       documentObject.loginShell = .csh
       documentHasBeenEdited()
     }
-    
+
     if sender == zshButton {
       documentObject.loginShell = .zsh
       documentHasBeenEdited()
     }
-    
+
     if sender == homeDirectorySelectButton {
       showHomeDirectoryOpenPanel()
     }
-    
+
     if sender == exportButton {
       showExportWindow()
     }
-    
+
     if sender == helpButton {
       showHelp()
     }
   }
-  
+
   /**
    Shows the NSOpenPanel to select the Users home directory.
   */
@@ -167,11 +167,11 @@ class ViewController: NSViewController {
       guard response == .OK else {
         return
       }
-      
+
       guard let path = panel.url?.path else {
         return
       }
-      
+
       self.documentObject.homeDirectory = path
       self.homeDirectoryTextField?.stringValue = path
       self.documentHasBeenEdited()
@@ -226,12 +226,10 @@ class ViewController: NSViewController {
       }
 
       switch type {
-      case .Package:
+      case .package:
         Exporter.createPackageAt(url: panel.url!, documentObject: self.documentObject, options: packageOptions)
-        break
-      case .Script:
+      case .script:
         Exporter.createScriptAt(url: panel.url!, documentObject: self.documentObject, options: scriptOptions)
-        break
       }
     })
   }
@@ -269,14 +267,11 @@ class ViewController: NSViewController {
 
     if sender == hideUserAccountCheckbox {
       documentObject.hideUserAccount = selected
-    }
-    else if sender == hideHomeDirectoryCheckbox {
+    } else if sender == hideHomeDirectoryCheckbox {
       documentObject.hideHomeDirectory = selected
-    }
-    else if sender == loginAutomaticallyCheckbox {
+    } else if sender == loginAutomaticallyCheckbox {
       documentObject.loginAutomatically = selected
-    }
-    else if sender == skipSetupAssistantCheckbox {
+    } else if sender == skipSetupAssistantCheckbox {
       documentObject.skipSetupAssistant = selected
     }
 
@@ -317,49 +312,43 @@ class ViewController: NSViewController {
 }
 
 extension ViewController: NSTextFieldDelegate {
-  
+
   func controlTextDidChange(_ obj: Notification) {
-    
+
     guard let textField = obj.object as? NSTextField else {
       return
     }
-    
+
     let string = textField.stringValue
-    
+
     if textField == fullNameTextField {
       documentObject.fullName = string
-    }
-    else if textField == accountNameTextField {
+    } else if textField == accountNameTextField {
       documentObject.accountName = string
-    }
-    else if textField == passwordSecureTextField {
+    } else if textField == passwordSecureTextField {
       documentObject.password = string
-    }
-    else if textField == verifySecureTextField {
+    } else if textField == verifySecureTextField {
       documentObject.verify = string
-    }
-    else if textField == passwordHintTextField {
+    } else if textField == passwordHintTextField {
       documentObject.passwordHint = string
-    }
-    else if textField == userIDTextField {
+    } else if textField == userIDTextField {
       documentObject.userID = string
-    }
-    else if textField == homeDirectoryTextField {
+    } else if textField == homeDirectoryTextField {
       documentObject.homeDirectory = string
     }
-    
+
     documentHasBeenEdited()
     validateExportButton()
   }
-  
+
   func controlTextDidEndEditing(_ obj: Notification) {
-    
+
     guard let textField = obj.object as? NSTextField else {
       return
     }
-    
+
     let string = textField.stringValue
-    
+
     // auto populate account name if full name has been entered, and account name is blank
     if textField == fullNameTextField && (accountNameTextField?.stringValue.isEmpty)! {
       let accountName = string.convertedToAccountName
@@ -374,7 +363,7 @@ extension ViewController: NSTextFieldDelegate {
       documentObject.homeDirectory = homeDirectory
       homeDirectoryTextField?.stringValue = homeDirectory
     }
-    
+
     validateExportButton()
   }
 }

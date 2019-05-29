@@ -150,6 +150,7 @@
 				355514BE1F8B830C00A44996 /* Frameworks */,
 				355514BF1F8B830C00A44996 /* Resources */,
 				3579F33E20BD7D6000F5687B /* ShellScript */,
+				3522DFF5229DF099009801EA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -214,6 +215,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3522DFF5229DF099009801EA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/usr/bin/env bash";
+			shellScript = "if which swiftlint >/dev/null ; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		3579F33E20BD7D6000F5687B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -225,7 +243,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "#!/bin/bash\nbuild=\"$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PRODUCT_SETTINGS_PATH}\")\"\nbuild=$(($build + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $build\" \"${PRODUCT_SETTINGS_PATH}\"";
+			shellScript = "#!/usr/bin/env bash\nbuild=\"$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PRODUCT_SETTINGS_PATH}\")\"\nbuild=$(($build + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $build\" \"${PRODUCT_SETTINGS_PATH}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

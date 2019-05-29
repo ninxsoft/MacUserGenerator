@@ -14,33 +14,28 @@ extension NSBezierPath {
    Returns a CGPath converted from the provided NSBezierPath
   */
   var CGPath: CGPath {
-   
+
     let path = CGMutablePath()
     var points = [CGPoint.zero, CGPoint.zero, CGPoint.zero]
-    
-    for i in 0..<self.elementCount {
-      
-      let type = self.element(at: i, associatedPoints: &points)
-      
+
+    for index in 0..<self.elementCount {
+
+      let type = self.element(at: index, associatedPoints: &points)
+
       switch type {
       case .moveTo:
         path.move(to: points[0])
-        break
       case .lineTo:
         path.addLine(to: points[0])
-        break
       case .curveTo:
         path.addCurve(to: points[0], control1: points[1], control2: points[2])
-        break
       case .closePath:
         path.closeSubpath()
-        break
       default:
         path.closeSubpath()
-        break
       }
     }
-    
+
     return path
   }
 }
