@@ -169,11 +169,8 @@ extension String {
       xors.append(xor)
     }
 
-    // pad the xor array with garbage until it's a multiple of 12 bytes long
     while xors.count % 12 != 0 {
-      let character = UInt8(arc4random_uniform(50) + 50)
-      let key = keys[Int(arc4random_uniform(UInt32(keys.count)))]
-      let xor = character ^ key
+      let xor = keys[xors.count % 11]
       xors.append(xor)
     }
 
