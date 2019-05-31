@@ -1,47 +1,52 @@
 # MacUserGenerator
 
-A utility that assists in automating the creation of macOS User Accounts.
+A Mac utility that assists in automating the creation of macOS User Accounts.
 
-MacUserGenerator (MUG) is written from the ground up, with ideas ***heavily*** inspired from [MagerValp's](https://github.com/MagerValp) [CreateUserPkg](https://github.com/MagerValp/CreateUserPkg).
+**MacUserGenerator** (MUG) is written from the ground up, with ideas ***heavily*** inspired from [MagerValp's](https://github.com/MagerValp) [CreateUserPkg](https://github.com/MagerValp/CreateUserPkg).
 ![Sample User](Readme%20Resources/Sample%20User.png)
 
 ## Features
-*   [x] Export a user account as a **Shell script (sh)**.
-*   [x] Export a user account as an **Installer Package (pkg)**.
+
+*   [x] Export a user account as a **Python script (PY)**.
+*   [x] Export a user account as an **Installer Package (PKG)**.
 *   [x] Ability to Open / Save the user account document / snapshot (MUGshot? 🙃).
-*   [x] Nice to haves:
-    *   User account can be hidden from the login window and the **Users and Groups** preference pane in **System Preferences.app**.
-        *   User home folder can also be hidden.
-    *   User can be set to login automatically.
-    *   User can skip the Setup Assistant on first login.
-        *   User can also skip the iCloud setup screen.
-        *   User can also skip the Siri setup screen.
-        *   User can also skip the Touch ID setup screen.
-        *   User can also skip the Analytics screen.
-        *   User can also skip the Data & Privacy screen.
+
+|                                   | **Booted Volumes**                  | **Targeted Volumes** |
+| --------------------------------: | :---------------------------------: | :------------------: |
+| **Create User Accounts**          | Yes [*](#macos-mojave-1014-caveats) | Yes                  |
+| **Set Administrator**             | Yes                                 | Yes                  |
+| **Hide User Account**             | Yes                                 | Yes                  |
+| **Hide User Account Home Folder** | Yes                                 | Yes                  |
+| **Login Automatically**           | Yes                                 | Yes                  |
+| **Skip Setup Assistant**          | Yes                                 | Not Yet (In Testing) |
+| **User Account Picture**          | Yes                                 | Yes                  |
+
+### * macOS Mojave 10.14 Caveats:
+
+*   Supported when [System Integrity Protection (SIP)](https://support.apple.com/en-us/HT204899) is **disabled**
+*   When SIP is **enabled**, attempting to update the **User ID** and **Home Directory** attributes will result in the following prompts:
+
+    | **Scripts** | **Packages** |
+    | :---------: | :----------: |
+    | ![Mojave Scripts](Readme%20Resources/Mojave%20Scripts.png) | ![Mojave Packages](Readme%20Resources/Mojave%20Packages.png)  |
 
 ## Under the hood (the nerdy stuff)
-*   Export a user account as a **Shell script (sh):**
-    *   Shell environment is bash: `#!/usr/bin/env bash`
-    *   The user account picture is embedded into the shell script (base64). No need for a separate image file!
-    *   The user account password is hashed using [PBKDF2](https://en.wikipedia.org/wiki/PBKDF2) (your password does not appear in plain text anywhere).
-*   Export a user account as an **Installer Package (pkg):**
-    *   Package is payload free, it uses the script export mentioned above as a postinstall script within the package.
-    *   Package will be signed with a [Developer ID Installer Certificate](https://developer.apple.com/developer-id/) (if selected) during export.
-    *   Exports should work with targeted volumes (used in imaging workflows ie. [AutoDMG](https://github.com/MagerValp/AutoDMG)).
+*   Export a user account as a **Python script (PY):**
+    *   The user account password is hashed using [PBKDF2](https://en.wikipedia.org/wiki/PBKDF2). Your password does not appear in plain text anywhere!
+    *   The user account picture is embedded into the python script (base64). No need for a separate image file!
+*   Export a user account as an **Installer Package (PKG):**
+    *   Package is payload free - it uses the script export mentioned above as a **postinstall** script within the package.
+    *   Package will be signed with a [Developer ID Installer Certificate](https://developer.apple.com/developer-id/) (if selected) during export:
 
-![Export](Readme%20Resources/Export.png)
+    ![Export](Readme%20Resources/Export.png)
 
 ## Things I would love some help with
-*   [ ]   A proper app icon. It's horrible.
-*   [ ]   Maybe a better app name? **MacUserGenerator (MUG)** is a play on words on **CreateUserPkg (CUP)**. Open to alternatives 😀.
 *   [ ]   Ability for the user account to be allowed to unlock FileVault (FDE).
 
 ## Requirements
-*   Written in Swift 4.3.
-*   Built using Xcode 9.3.
+*   Written in Swift 5.0.1.
+*   Built using Xcode 10.2.1.
 *   Builds run on OS X El Capitan 10.11 or later.
-*   Exports tested on macOS Sierra 10.12 and later.
 
 ## Download
 Grab the latest version of MacUserGenerator from the [releases page](https://github.com/ninxsoft/MacUserGenerator/releases).
@@ -49,6 +54,7 @@ Grab the latest version of MacUserGenerator from the [releases page](https://git
 ## Credits / Thank You
 *   Project created and maintained by Nindi Gill ([ninxsoft](https://github.com/ninxsoft)).
 *   Per Olofsson ([MagerValp](https://github.com/MagerValp)) for his blessing and advice on the project.
+*   Greg Neagle ([gregneagle](https://github.com/gregneagle)) for his work on [pycreateuserpackage](https://github.com/gregneagle/pycreateuserpkg) - his project has really helped me understand how to communicate with the OS via the OpenDirectory API.
 *   Marcus Ransom ([@marcusransom](https://twitter.com/marcusransom)) for his advice and help with testing.
 
 ## Version History
