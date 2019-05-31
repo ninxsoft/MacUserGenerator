@@ -9,11 +9,9 @@ import stat
 import subprocess
 import sys
 import uuid
-# pylint: disable=E0611
-from OpenDirectory import ODSession, ODNode, kODNodeTypeLocalNodes, kODRecordTypeUsers
-# pylint: enable=E0611
-
-PLIST_PATH = "/private/var/db/dslocal/nodes/Default/users/"
+from Foundation import NSArray, NSData
+from OpenDirectory import ODSession, ODNode
+from OpenDirectory import kODNodeTypeLocalNodes, kODRecordTypeUsers
 
 USER_DATA = {
     "authentication_authority": ";ShadowHash;HASHLIST:<SALTED-SHA512-PBKDF2>",
@@ -21,10 +19,11 @@ USER_DATA = {
     "gid":                      "20",
     "IsHidden":                 "#ISHIDDEN",
     "home":                     "#HOME",
+    "jpegphoto":                "#JPEGPHOTO".decode('base64'),
     "name":                     "#NAME",
     "passwd":                   "********",
     "realname":                 "#REALNAME",
-    "ShadowHash":               """#SHADOWHASH""",
+    "ShadowHashData":           """#SHADOWHASHDATA""".decode('base64'),
     "shell":                    "#SHELL",
     "uid":                      "#UID",
     "_writers_hint":            "#NAME",
@@ -38,7 +37,7 @@ USER_DATA = {
 USER_PREFERENCES = {
     "admin":              "#ADMIN",
     "autologin":          "#AUTOLOGIN",
-    "kcpassword":         "#KCPASSWORD",
+    "kcpassword":         "#KCPASSWORD".decode('base64'),
     "skipsetupassistant": "#SKIPSETUPASSISTANT"
 }
 
@@ -56,6 +55,9 @@ def is_booted_volume():
 
 def get_target():
     """Description"""
+
+    if len(sys.argv) < 4:
+        return ""
 
     target = sys.argv[3]
     local_disk = "/"
@@ -81,14 +83,22 @@ def get_od_node():
     return node
 
 
-def record_exists(name):
+def get_user_plist_path():
     """Description"""
 
-    if is_booted_volume():
+    user_plist_path = "/private/var/db/dslocal/nodes/Default/users/"
+    return user_plist_path
+
+
+def check_if_user_name_exists(name):
+    """Description"""
+
+    if not is_booted_volume():
         node = get_od_node()
 
         if not node:
-            return False
+            print "Unable to look up OpenDirectory node, aborting..."
+            exit(1)
 
         record, error = node.recordWithRecordType_name_attributes_error_(
             kODRecordTypeUsers,
@@ -99,71 +109,116 @@ def record_exists(name):
 
         if error:
             print >> sys.stderr, error
-            return False
+            exit(1)
 
-        return record is not None
+        if record is not None:
+            print "User account '" + name + "' already exists, aborting..."
+            exit(1)
+
     else:
-        path = get_target() + PLIST_PATH + name + ".plist"
-        return os.path.isfile(path)
+        path = get_target() + get_user_plist_path() + name + ".plist"
+
+        if os.path.isfile(path):
+            print "User account '" + name + "' already exists, aborting..."
+            exit(1)
+
+    print "User account '" + name + "' does not exist, continuing..."
 
 
-def create_record(user_data):
+def check_if_user_id_exists(uid):
     """Description"""
 
-    print "User record '" + user_data["name"] + "' does not exist"
+    if is_booted_volume():
+        dscl_arguments = ["dscl", ".", "list", "/Users", "UniqueID"]
+        dscl_process = subprocess.Popen(dscl_arguments,
+                                        stdout=subprocess.PIPE)
+        awk_arguments = ["awk", "{ print $2 }"]
+        awk_process = subprocess.Popen(awk_arguments,
+                                       stdin=dscl_process.stdout,
+                                       stdout=subprocess.PIPE)
+        dscl_process.stdout.close()
+        output, error = awk_process.communicate()
+        uids = output.split()
+
+        if uid in uids:
+            print "User ID '" + uid + "' already exists, aborting..."
+            exit(1)
+
+    else:
+        path = get_target() + get_user_plist_path()
+
+        for filename in os.listdir(path):
+
+            plist = path + filename
+            dictionary = plistlib.readPlist(plist)
+
+            if uid == dictionary["uid"]:
+                print "User ID '" + uid + "' already exists, aborting..."
+                exit(1)
+
+    print "User ID '" + uid + "' does not exist, continuing..."
+
+
+def create_user_account(name):
+    """Description"""
 
     if is_booted_volume():
         node = get_od_node()
 
         if not node:
-            return
+            print "Unable to look up OpenDirectory node, aborting..."
+            exit(1)
 
         record, error = node.createRecordWithRecordType_name_attributes_error_(
             kODRecordTypeUsers,
-            user_data["name"],
+            name,
             None,
             None
         )
 
         if error:
             print >> sys.stderr, error
-            return
+            exit(1)
 
-        print "User record '" + user_data["name"] + "' created via Open Directory"
+        print "User account '" + name + "' created via Open Directory"
     else:
-        dictionary = {"name": user_data["name"]}
-        path = get_target() + PLIST_PATH + user_data["name"] + ".plist"
+        dictionary = {
+            "name": name
+        }
+        path = get_target() + get_user_plist_path() + name + ".plist"
         plistlib.writePlist(dictionary, path)
         os.chmod(path, stat.S_IRUSR | stat.S_IWUSR)
-        print "User record '" + user_data["name"] + "' created via Property List"
+        print "User account '" + name + "' created via Property List"
 
 
-def update_record(user_data):
+def update_user_account(user_data):
     """Description"""
+
+    name = user_data["name"]
 
     if is_booted_volume():
         node = get_od_node()
 
         if not node:
-            return
+            print "Unable to look up OpenDirectory node, aborting..."
+            exit(1)
 
         record, error = node.recordWithRecordType_name_attributes_error_(
             kODRecordTypeUsers,
-            user_data["name"],
+            name,
             None,
             None
         )
 
-        print "User record '" + user_data["name"] + "' exists"
-
         if error:
             print >> sys.stderr, error
-            return
+            exit(1)
 
         for attribute, value in user_data.items():
 
-            if attribute == "ShadowHash":
-                continue
+            if attribute == "jpegphoto" or attribute == "ShadowHashData":
+                data = NSData.dataWithBytes_length_(value, len(value))
+                value = NSArray.alloc().initWithObjects_(data)
 
             success, error = record.setValue_forAttribute_error_(
                 value,
@@ -173,49 +228,34 @@ def update_record(user_data):
 
             if error:
                 print >> sys.stderr, error
-                return
+                exit(1)
 
-            print "User record '" + user_data["name"] + "' updated attribute " + \
+            if attribute == "jpegphoto" or attribute == "ShadowHashData":
+                value = "DATA"
+
+            print "User account '" + name + "' updated attribute " + \
                 attribute + ": " + str(value)
-
-        print "User record '" + user_data["name"] + "' updated via Open Directory"
     else:
-        path = get_target() + PLIST_PATH + user_data["name"] + ".plist"
-        plist = plistlib.readPlist(path)
-
-        print "User record '" + user_data["name"] + "' exists"
+        path = get_target() + get_user_plist_path() + name + ".plist"
+        dictionary = plistlib.readPlist(path)
 
         for attribute, value in user_data.items():
 
-            if attribute == "ShadowHash":
-                continue
+            if attribute == "jpegphoto":
+                value = plistlib.Data(value.decode('base64'))
 
-            plist[attribute] = value
+            if attribute == "ShadowHashData":
+                value = plistlib.Data(value)
 
-            print "User record '" + user_data["name"] + "' updated attribute " + \
+            dictionary[attribute] = value
+
+            if attribute == "jpegphoto" or attribute == "ShadowHashData":
+                value = "DATA"
+
+            print "User account '" + name + "' updated attribute " + \
                 attribute + ": " + str(value)
 
-        plistlib.writePlist(plist, path)
-        print "User record '" + user_data["name"] + "' updated via Property List"
-
-
-def set_shadowhash(name, shadowhash):
-    """Description"""
-
-    path = get_target() + PLIST_PATH + name + ".plist"
-    command = "Remove :ShadowHashData:0"
-    subprocess.call(["/usr/libexec/plistbuddy", "-c", command, path])
-    command = "Add :ShadowHashData:0 string " + "..." + shadowhash + "..."
-    subprocess.call(["/usr/libexec/plistbuddy", "-c", command, path])
-    filehandler = open(path, 'r')
-    plist = filehandler.read()
-    filehandler.close()
-    plist = plist.replace('<string>...', '<data>')
-    plist = plist.replace('...</string>', '</data>')
-    filehandler = open(path, 'w')
-    filehandler.write(plist)
-    filehandler.close()
-    print "User record '" + name + "' updated attribute ShadowHash"
+        plistlib.writePlist(dictionary, path)
 
 
 def set_admin(state, name, generateduid):
@@ -223,80 +263,144 @@ def set_admin(state, name, generateduid):
 
     if is_booted_volume():
         membertype = "-a" if state == "TRUE" else "-d"
-        subprocess.call(["dseditgroup", "-o", "edit", membertype, name, "-t", "user", "admin"])
-        print ("Set" if state else "Removed") + " Admin for user record '" + name + "'"
+        subprocess.call(["dseditgroup", "-o", "edit", membertype,
+                         name, "-t", "user", "admin"])
+        granted = ("Granted" if state else "Removed")
+        print "User account '" + name + "' admin privileges " + granted
     else:
-        print "plist method"
+        plist = "/private/var/db/dslocal/nodes/Default/groups/admin.plist"
+        path = get_target() + plist
+        dictionary = plistlib.readPlist(path)
+
+        if state:
+            if name not in dictionary["users"]:
+                dictionary["users"].append(name)
+
+            if generateduid not in dictionary["groupmembers"]:
+                dictionary["groupmembers"].append(generateduid)
+        else:
+            if name in dictionary["users"]:
+                dictionary["users"].remove(name)
+
+            if generateduid in dictionary["groupmembers"]:
+                dictionary["groupmembers"].remove(generateduid)
+
+        plistlib.writePlist(dictionary, path)
+        granted = ("granted" if state else "removed")
+        print "User account '" + name + "' administrator privileges " + granted
 
 
-def set_autologin(name, kcpassword):
+def set_autologin(state, kcpassword, name):
     """Description"""
 
+    if not state:
+        return
 
-def create_home_directory(name):
+    path = get_target() + "/private/etc/kcpassword"
+
+    with open(path, "w") as file:
+        file.write(kcpassword)
+
+    os.chmod(path, stat.S_IRUSR | stat.S_IWUSR)
+
+    plist = "/Library/Preferences/com.apple.loginwindow.plist"
+    path = get_target() + plist
+
+    with open(path, "rb") as file:
+        filecontents = file.read()
+    arguments = ["plutil", "-convert", "xml1", "-o", "-", "--", "-"]
+    process = subprocess.Popen(arguments,
+                               stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE)
+    string, error = process.communicate(filecontents)
+    dictionary = plistlib.readPlistFromString(string)
+    dictionary["autoLoginUser"] = name
+    dictionary["lastUserName"] = name
+    plistlib.writePlist(dictionary, path)
+
+    if is_booted_volume():
+        subprocess.call(["killall", "cfprefsd"])
+
+    print "User account '" + name + "' set autologin"
+
+
+def create_home_directory(name, home):
     """Description"""
 
-    subprocess.call(["createhomedir", "-c", "-u", name])
-    print "Created user record '" + name + "' home folder"
+    if is_booted_volume():
+        os.system("createhomedir -c -u " + name)
+
+        if not os.path.isfolder(home):
+            print "User account '" + name + \
+                "' home folder was not created, aborting..."
+            exit(1)
+    else:
+        print "CREATE HOME DIRECTORY PLIST METHOD"
+
+    print "User account '" + name + "' home folder created"
 
 
-def skip_setup_assistant(name, home):
+def skip_setup_assistant(state, name, uid, home):
     """Description"""
 
-    path = "/private/var/db/.AppleSetupDone"
-    subprocess.call(["touch", path])
-    path = home + "/Library/Preferences/com.apple.SetupAssistant.plist"
+    if not state:
+        return
 
-    command = "Add :DidSeeCloudSetup bool TRUE"
-    subprocess.call(["/usr/libexec/plistbuddy", "-c", command, path])
-    print "Skipped Setup Assistant: iCloud"
+    path = get_target() + "/private/var/db/.AppleSetupDone"
 
-    command = "Add :DidSeeSiriSetup bool TRUE"
-    subprocess.call(["/usr/libexec/plistbuddy", "-c", command, path])
-    print "Skipped Setup Assistant: Siri"
-
-    command = "Add :DidSeeTouchIDSetup bool TRUE"
-    subprocess.call(["/usr/libexec/plistbuddy", "-c", command, path])
-    print "Skipped Setup Assistant: Touch ID"
+    with open(path, 'a'):
+        os.utime(path, None)
 
     productversion = platform.mac_ver()[0]
     buildversion = os.popen("sw_vers -buildVersion").read().strip()
-    command = "Add :LastSeenCloudProductVersion string " + productversion
-    subprocess.call(["/usr/libexec/plistbuddy", "-c", command, path])
-    command = "Add :LastSeenBuddyBuildVersion string " + buildversion
-    subprocess.call(["/usr/libexec/plistbuddy", "-c", command, path])
-    print "Skipped Setup Assistant: Analytics"
 
-    command = "Add :DidSeePrivacy bool TRUE"
-    subprocess.call(["/usr/libexec/plistbuddy", "-c", command, path])
-    print "Skipped Setup Assistant: Data & Privacy"
+    dictionary = {
+        "DidSeeCloudSetup": True,
+        "DidSeeSiriSetup": True,
+        "LastSeenCloudProductVersion": productversion,
+        "LastSeenBuddyBuildVersion": buildversion,
+        "DidSeePrivacy": True
+    }
 
-    subprocess.call(["chown", name, path])
-    subprocess.call(["chmod", "600", path])
-    print "Set correct ownership and permissions on " + path
+    plist = "/Library/Preferences/com.apple.SetupAssistant.plist"
+    path = get_target() + home + plist
+    plistlib.writePlist(dictionary, path)
+    os.chown(path, int(uid), -1)
+    os.chmod(path, stat.S_IRUSR | stat.S_IWUSR)
+    print "User account '" + name + "' skipped Setup Assistant"
+
 
 def restart_directory_services():
     """Description"""
 
-    subprocess.call(["killall", "DirectoryService"])
-    subprocess.call(["killall", "opendirectoryd"])
-    print "Restarted Directory Services"
+    if is_booted_volume():
+        subprocess.call(["killall", "opendirectoryd"])
+        print "Restarted Directory Services"
 
 
 def main():
     """Description"""
 
-    if not record_exists(USER_DATA["name"]):
-        create_record(USER_DATA)
+    check_if_user_name_exists(USER_DATA["name"])
+    check_if_user_id_exists(USER_DATA["uid"])
 
-    update_record(USER_DATA)
-    set_shadowhash(USER_DATA["name"], USER_DATA["ShadowHash"])
-    set_admin(USER_PREFERENCES["admin"], USER_DATA["name"], USER_DATA["generateduid"])
-    set_autologin(USER_DATA["name"], USER_PREFERENCES["kcpassword"])
-    create_home_directory(USER_DATA["name"])
+    create_user_account(USER_DATA["name"])
+    update_user_account(USER_DATA)
 
-    if USER_PREFERENCES["skipsetupassistant"] == "TRUE":
-        skip_setup_assistant(USER_DATA["name"], USER_DATA["home"])
+    set_admin(USER_PREFERENCES["admin"],
+              USER_DATA["name"],
+              USER_DATA["generateduid"])
+
+    set_autologin(USER_PREFERENCES["autologin"],
+                  USER_PREFERENCES["kcpassword"],
+                  USER_DATA["name"])
+
+    create_home_directory(USER_DATA["name"], USER_DATA["home"])
+
+    skip_setup_assistant(USER_PREFERENCES["skipsetupassistant"],
+                         USER_DATA["name"],
+                         USER_DATA["uid"],
+                         USER_DATA["home"])
 
     restart_directory_services()
 
