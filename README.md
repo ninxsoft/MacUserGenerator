@@ -13,7 +13,7 @@ A Mac utility that assists in automating the creation of macOS User Accounts.
 
 |                                   | **Booted Volumes**                  | **Targeted Volumes** |
 | --------------------------------: | :---------------------------------: | :------------------: |
-| **Create User Accounts**          | Yes [*](#macos-mojave-1014-caveats) | Yes                  |
+| **Create User Accounts**          | Yes [*](#-macos-mojave-1014-caveats)| Yes                  |
 | **Set Administrator**             | Yes                                 | Yes                  |
 | **Hide User Account**             | Yes                                 | Yes                  |
 | **Hide User Account Home Folder** | Yes                                 | Yes                  |
