@@ -132,7 +132,11 @@ extension String {
                    "</dict>" +
                  "</plist>"
 
-    return string
+    guard let data = string.data(using: .utf8) else {
+      return ""
+    }
+
+    return data.base64EncodedString(options: .lineLength64Characters)
   }
 
   /**
