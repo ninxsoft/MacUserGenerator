@@ -90,6 +90,15 @@ def get_user_plist_path():
     return user_plist_path
 
 
+def check_if_user_is_root():
+    """Description"""
+
+    if os.geteuid() != 0:
+        file = os.path.basename(__file__)
+        print "Please execute '" + file + "' as a user with sudo priviliges!"
+        exit(1)
+
+
 def check_if_user_name_exists(name):
     """Description"""
 
@@ -150,9 +159,17 @@ def check_if_user_id_exists(uid):
         for filename in os.listdir(path):
 
             plist = path + filename
-            dictionary = plistlib.readPlist(plist)
 
-            if uid == dictionary["uid"]:
+            with open(plist, "rb") as file:
+                filecontents = file.read()
+            arguments = ["plutil", "-convert", "xml1", "-o", "-", "--", "-"]
+            process = subprocess.Popen(arguments,
+                                       stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE)
+            string, error = process.communicate(filecontents)
+            dictionary = plistlib.readPlistFromString(string)
+
+            if uid == dictionary["uid"][0]:
                 print "User ID '" + uid + "' already exists, aborting..."
                 exit(1)
 
@@ -241,13 +258,10 @@ def update_user_account(user_data):
 
         for attribute, value in user_data.items():
 
-            if attribute == "jpegphoto":
-                value = plistlib.Data(value.decode('base64'))
-
-            if attribute == "ShadowHashData":
+            if attribute == "jpegphoto" or attribute == "ShadowHashData":
                 value = plistlib.Data(value)
 
-            dictionary[attribute] = value
+            dictionary[attribute] = [value]
 
             if attribute == "jpegphoto" or attribute == "ShadowHashData":
                 value = "DATA"
@@ -265,14 +279,22 @@ def set_admin(state, name, generateduid):
         membertype = "-a" if state == "TRUE" else "-d"
         subprocess.call(["dseditgroup", "-o", "edit", membertype,
                          name, "-t", "user", "admin"])
-        granted = ("Granted" if state else "Removed")
+        granted = ("Granted" if state == "TRUE" else "Removed")
         print "User account '" + name + "' admin privileges " + granted
     else:
         plist = "/private/var/db/dslocal/nodes/Default/groups/admin.plist"
         path = get_target() + plist
-        dictionary = plistlib.readPlist(path)
 
-        if state:
+        with open(path, "rb") as file:
+            filecontents = file.read()
+        arguments = ["plutil", "-convert", "xml1", "-o", "-", "--", "-"]
+        process = subprocess.Popen(arguments,
+                                   stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE)
+        string, error = process.communicate(filecontents)
+        dictionary = plistlib.readPlistFromString(string)
+
+        if state == "TRUE":
             if name not in dictionary["users"]:
                 dictionary["users"].append(name)
 
@@ -286,14 +308,14 @@ def set_admin(state, name, generateduid):
                 dictionary["groupmembers"].remove(generateduid)
 
         plistlib.writePlist(dictionary, path)
-        granted = ("granted" if state else "removed")
+        granted = ("granted" if state == "TRUE" else "removed")
         print "User account '" + name + "' administrator privileges " + granted
 
 
 def set_autologin(state, kcpassword, name):
     """Description"""
 
-    if not state:
+    if state != "TRUE":
         return
 
     path = get_target() + "/private/etc/kcpassword"
@@ -330,20 +352,20 @@ def create_home_directory(name, home):
     if is_booted_volume():
         os.system("createhomedir -c -u " + name)
 
-        if not os.path.isfolder(home):
+        if not os.path.isdir(home):
             print "User account '" + name + \
-                "' home folder was not created, aborting..."
+                "' home directory was not created, aborting..."
             exit(1)
     else:
         print "CREATE HOME DIRECTORY PLIST METHOD"
 
-    print "User account '" + name + "' home folder created"
+    print "User account '" + name + "' home directory created"
 
 
 def skip_setup_assistant(state, name, uid, home):
     """Description"""
 
-    if not state:
+    if state != "TRUE":
         return
 
     path = get_target() + "/private/var/db/.AppleSetupDone"
@@ -380,6 +402,8 @@ def restart_directory_services():
 
 def main():
     """Description"""
+
+    check_if_user_is_root()
 
     check_if_user_name_exists(USER_DATA["name"])
     check_if_user_id_exists(USER_DATA["uid"])
