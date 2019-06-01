@@ -2,7 +2,7 @@
 
 """
 MacUserGenerator - Export.py
-Copyright © 2019 Nindi Gill. All rights reserved.
+Copyright 2019 Nindi Gill. All rights reserved.
 
 A template python script used to create macOS user accounts.
 """
@@ -362,8 +362,8 @@ def set_admin(state, name, generateduid):
     """
 
     if is_booted_volume():
-        membertype = "-a" if state == "TRUE" else "-d"
-        subprocess.call(["dseditgroup", "-o", "edit", membertype,
+        member_type = "-a" if state == "TRUE" else "-d"
+        subprocess.call(["dseditgroup", "-o", "edit", member_type,
                          name, "-t", "user", "admin"])
         granted = ("Granted" if state == "TRUE" else "Removed")
         print "User account '" + name + "' admin privileges " + granted
@@ -435,7 +435,8 @@ def skip_setup_assistant(state, name, uid, gid, home):
 
     # creating .AppleSetupDone
     path = get_target() + "/private/var/db/.AppleSetupDone"
-    os.mknod(path, 0644)
+    if not os.path.isfile(path):
+        os.mknod(path, 0644)
 
     # creating the home directory strucure
     if is_booted_volume():
@@ -447,19 +448,19 @@ def skip_setup_assistant(state, name, uid, gid, home):
             exit(1)
     else:  # targeted volume logic
         path = get_target() + home
-        if not create_directory(path, 0755):
+        if not create_directory(path, 0755, uid, gid):
             print "User account '" + name + \
                 "' home directory was not created, aborting..."
             exit(1)
 
         path = get_target() + home + "/Library"
-        if not create_directory(path, 0700):
+        if not create_directory(path, 0700, uid, gid):
             print "User account '" + name + \
                 "' home directory was not created, aborting..."
             exit(1)
 
         path = get_target() + home + "/Library/Preferences"
-        if not create_directory(path, 0700):
+        if not create_directory(path, 0700, uid, gid):
             print "User account '" + name + \
                 "' home directory was not created, aborting..."
             exit(1)
@@ -470,14 +471,14 @@ def skip_setup_assistant(state, name, uid, gid, home):
     plist = "/System/Library/CoreServices/SystemVersion.plist"
     path = get_target() + plist
     dictionary = get_dictionary_from_plist(path)
-    productversion = dictionary["ProductVersion"]
-    buildversion = dictionary["ProductBuildVersion"]
+    product_version = dictionary["ProductVersion"]
+    build_version = dictionary["ProductBuildVersion"]
 
     dictionary = {
         "DidSeeCloudSetup": True,
         "DidSeeSiriSetup": True,
-        "LastSeenCloudProductVersion": productversion,
-        "LastSeenBuddyBuildVersion": buildversion,
+        "LastSeenCloudProductVersion": product_version,
+        "LastSeenBuddyBuildVersion": build_version,
         "DidSeePrivacy": True
     }
 
