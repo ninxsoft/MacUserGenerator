@@ -3,7 +3,7 @@
 //  MacUserGenerator
 //
 //  Created by Nindi Gill on 9/10/17.
-//  Copyright © 2017 Nindi Gill. All rights reserved.
+//  Copyright © 2019 Nindi Gill. All rights reserved.
 //
 
 import Cocoa

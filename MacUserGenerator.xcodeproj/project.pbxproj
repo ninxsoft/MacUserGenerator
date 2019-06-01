@@ -23,6 +23,7 @@
 		35C56C551F902C6E002458C6 /* NSImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C56C541F902C6E002458C6 /* NSImage+Extension.swift */; };
 		35E192FA1FA81A4500F3CF32 /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E192F81FA81A4500F3CF32 /* Data+Extension.swift */; };
 		35F4469A1FA97573001B3290 /* ExportType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F446991FA97573001B3290 /* ExportType.swift */; };
+		35FC8D8C22A1F0220068F023 /* NSColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FC8D8B22A1F0220068F023 /* NSColor+Extension.swift */; };
 		57408C711F94B163009736A3 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57408C701F94B163009736A3 /* ExportViewController.swift */; };
 		57B52ADE22904F1D00ABF920 /* Export.py in Resources */ = {isa = PBXBuildFile; fileRef = 57B52ADD22904F1D00ABF920 /* Export.py */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,7 @@
 		35D41A261FA712120006FEBE /* MacUserGenerator-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MacUserGenerator-Bridging-Header.h"; sourceTree = "<group>"; };
 		35E192F81FA81A4500F3CF32 /* Data+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
 		35F446991FA97573001B3290 /* ExportType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportType.swift; sourceTree = "<group>"; };
+		35FC8D8B22A1F0220068F023 /* NSColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Extension.swift"; sourceTree = "<group>"; };
 		57408C701F94B163009736A3 /* ExportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		57B52ADD22904F1D00ABF920 /* Export.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = Export.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -113,6 +115,7 @@
 			children = (
 				35E192F81FA81A4500F3CF32 /* Data+Extension.swift */,
 				357E293B1FA144D40016E831 /* NSBezierPath+Extension.swift */,
+				35FC8D8B22A1F0220068F023 /* NSColor+Extension.swift */,
 				35C56C541F902C6E002458C6 /* NSImage+Extension.swift */,
 				357F04771F8F26AD00B1006D /* String+Extension.swift */,
 			);
@@ -230,7 +233,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/usr/bin/env bash";
-			shellScript = "if which swiftlint >/dev/null ; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if which swiftlint > /dev/null ; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		3579F33E20BD7D6000F5687B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -242,8 +245,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "#!/usr/bin/env bash\nbuild=\"$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PRODUCT_SETTINGS_PATH}\")\"\nbuild=$(($build + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $build\" \"${PRODUCT_SETTINGS_PATH}\"\n";
+			shellPath = "/usr/bin/env bash";
+			shellScript = "build=\"$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PRODUCT_SETTINGS_PATH}\")\"\nbuild=$(($build + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $build\" \"${PRODUCT_SETTINGS_PATH}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -262,6 +265,7 @@
 				355514C51F8B830C00A44996 /* AppDelegate.swift in Sources */,
 				356A4DB51F96A9AF007FAAB7 /* PackageOptions.swift in Sources */,
 				35C56C551F902C6E002458C6 /* NSImage+Extension.swift in Sources */,
+				35FC8D8C22A1F0220068F023 /* NSColor+Extension.swift in Sources */,
 				357F04781F8F26AD00B1006D /* String+Extension.swift in Sources */,
 				355514C91F8B830C00A44996 /* Document.swift in Sources */,
 				356A4DAE1F96A033007FAAB7 /* Exporter.swift in Sources */,

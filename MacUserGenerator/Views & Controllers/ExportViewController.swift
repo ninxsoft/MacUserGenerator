@@ -3,7 +3,7 @@
 //  MacUserGenerator
 //
 //  Created by Nindi Gill on 16/10/17.
-//  Copyright © 2017 Nindi Gill. All rights reserved.
+//  Copyright © 2019 Nindi Gill. All rights reserved.
 //
 
 import Cocoa
@@ -56,7 +56,8 @@ class ExportViewController: NSViewController {
 
     for string in strings {
       // strip out the leading whitespace and the uuid
-      let certificate = string.replacePatternMatches(of: "^.*[0-9A-F]{40} ", with: "").replacingOccurrences(of: "\"", with: "")
+      var certificate = string.replacePatternMatches(of: "^.*[0-9A-F]{40} ", with: "")
+      certificate = certificate.replacingOccurrences(of: "\"", with: "")
       certificates.append(certificate)
     }
 
@@ -127,7 +128,9 @@ class ExportViewController: NSViewController {
     switch exportType {
     case .package:
       // if export type is package, ensure package identifier and version fields are not empty
-      nextButton?.isEnabled = !(packageIdentifierTextField?.stringValue.isEmpty)! && !(packageVersionTextField?.stringValue.isEmpty)!
+      let identifierIsNotEmpty = (packageIdentifierTextField?.stringValue.isEmpty)!
+      let versionIsNotEmpty = (packageVersionTextField?.stringValue.isEmpty)!
+      nextButton?.isEnabled = identifierIsNotEmpty && !versionIsNotEmpty
     case .script:
       nextButton?.isEnabled = true
     }

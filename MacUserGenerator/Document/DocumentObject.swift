@@ -3,7 +3,7 @@
 //  MacUserGenerator
 //
 //  Created by Nindi Gill on 11/10/17.
-//  Copyright © 2017 Nindi Gill. All rights reserved.
+//  Copyright © 2019 Nindi Gill. All rights reserved.
 //
 
 import Cocoa
@@ -96,20 +96,14 @@ class DocumentObject: NSObject {
       homeDirectory = string
     }
 
-    if let boolean = dictionary[Key.hideUserAccount.rawValue] as? Bool {
-      hideUserAccount = boolean
-    }
-
-    if let boolean = dictionary[Key.hideHomeDirectory.rawValue] as? Bool {
-      hideHomeDirectory = boolean
-    }
-
-    if let boolean = dictionary[Key.loginAutomatically.rawValue] as? Bool {
-      loginAutomatically = boolean
-    }
-
-    if let boolean = dictionary[Key.skipSetupAssistant.rawValue] as? Bool {
-      skipSetupAssistant = boolean
+    if let userAccount = dictionary[Key.hideUserAccount.rawValue] as? Bool,
+      let homeDirectory = dictionary[Key.hideHomeDirectory.rawValue] as? Bool,
+      let automatically = dictionary[Key.loginAutomatically.rawValue] as? Bool,
+      let setupAssistant = dictionary[Key.skipSetupAssistant.rawValue] as? Bool {
+      hideUserAccount = userAccount
+      hideHomeDirectory = homeDirectory
+      loginAutomatically = automatically
+      skipSetupAssistant = setupAssistant
     }
   }
 

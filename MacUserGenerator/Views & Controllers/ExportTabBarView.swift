@@ -3,7 +3,7 @@
 //  MacUserGenerator
 //
 //  Created by Nindi Gill on 26/10/17.
-//  Copyright © 2017 Nindi Gill. All rights reserved.
+//  Copyright © 2019 Nindi Gill. All rights reserved.
 //
 
 import Cocoa
@@ -24,7 +24,7 @@ import Cocoa
 
     // highlight background if tab bar view is selected
     if selected {
-      let selectedBackgroundColor = inDarkMode ? NSColor.systemBlue.withAlphaComponent(0.2) :  NSColor.systemBlue.withAlphaComponent(0.2)
+      let selectedBackgroundColor = inDarkMode ? NSColor.darkAppearanceBackground : NSColor.lightAppearanceBackground
       selectedBackgroundColor.setFill()
       dirtyRect.fill()
     }

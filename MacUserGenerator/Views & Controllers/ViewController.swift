@@ -3,7 +3,7 @@
 //  MacUserGenerator
 //
 //  Created by Nindi Gill on 9/10/17.
-//  Copyright © 2017 Nindi Gill. All rights reserved.
+//  Copyright © 2019 Nindi Gill. All rights reserved.
 //
 
 import Cocoa
@@ -185,18 +185,19 @@ class ViewController: NSViewController {
   private func showExportWindow() {
 
     let storyboard = NSStoryboard(name: "Main", bundle: nil)
+    let identifier = "ExportWindowController"
 
-    guard let windowController = storyboard.instantiateController(withIdentifier: "ExportWindowController") as? NSWindowController else {
+    guard let controller = storyboard.instantiateController(withIdentifier: identifier) as? NSWindowController else {
       return
     }
 
-    view.window?.beginSheet((windowController.window!), completionHandler: { response in
+    view.window?.beginSheet((controller.window!), completionHandler: { response in
 
       guard response == .OK else {
         return
       }
 
-      guard let viewController = windowController.contentViewController as? ExportViewController else {
+      guard let viewController = controller.contentViewController as? ExportViewController else {
         return
       }
 
@@ -292,17 +293,37 @@ class ViewController: NSViewController {
   */
   private func validateExportButton() {
 
-    let accountName = documentObject.accountName.isEmpty ? "NSStatusPartiallyAvailable" : (documentObject.accountName.isValidAccountName ? "NSStatusAvailable" : "NSStatusUnavailable")
-    accountNameImageView?.image = NSImage(named: accountName)
+    if documentObject.accountName.isEmpty {
+      accountNameImageView?.image = NSImage(named: "NSStatusPartiallyAvailable")
+    } else if documentObject.accountName.isValidAccountName {
+      accountNameImageView?.image = NSImage(named: "NSStatusAvailable")
+    } else {
+      accountNameImageView?.image = NSImage(named: "NSStatusUnavailable")
+    }
 
-    let verify = documentObject.verify.isEmpty ? "NSStatusPartiallyAvailable" : (documentObject.password == documentObject.verify ? "NSStatusAvailable" : "NSStatusUnavailable")
-    verifyImageView?.image = NSImage(named: verify)
+    if documentObject.verify.isEmpty {
+      verifyImageView?.image = NSImage(named: "NSStatusPartiallyAvailable")
+    } else if documentObject.password == documentObject.verify {
+      verifyImageView?.image = NSImage(named: "NSStatusAvailable")
+    } else {
+      verifyImageView?.image = NSImage(named: "NSStatusUnavailable")
+    }
 
-    let userID = documentObject.userID.isEmpty ? "NSStatusPartiallyAvailable" : (documentObject.userID.isValidUserID ? "NSStatusAvailable" : "NSStatusUnavailable")
-    userIDImageView?.image = NSImage(named: userID)
+    if documentObject.userID.isEmpty {
+      userIDImageView?.image = NSImage(named: "NSStatusPartiallyAvailable")
+    } else if documentObject.userID.isValidUserID {
+      userIDImageView?.image = NSImage(named: "NSStatusAvailable")
+    } else {
+      userIDImageView?.image = NSImage(named: "NSStatusUnavailable")
+    }
 
-    let homeDirectory = documentObject.homeDirectory.isEmpty ? "NSStatusPartiallyAvailable" : (documentObject.homeDirectory.isValidHomeDirectory ? "NSStatusAvailable" : "NSStatusUnavailable")
-    homeDirectoryImageView?.image = NSImage(named: homeDirectory)
+    if documentObject.homeDirectory.isEmpty {
+      homeDirectoryImageView?.image = NSImage(named: "NSStatusPartiallyAvailable")
+    } else if documentObject.homeDirectory.isValidHomeDirectory {
+      homeDirectoryImageView?.image = NSImage(named: "NSStatusAvailable")
+    } else {
+      homeDirectoryImageView?.image = NSImage(named: "NSStatusUnavailable")
+    }
 
     exportButton?.isEnabled = documentObject.accountName.isValidAccountName &&
                               documentObject.userID.isValidUserID &&

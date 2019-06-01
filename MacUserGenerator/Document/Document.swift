@@ -3,7 +3,7 @@
 //  MacUserGenerator
 //
 //  Created by Nindi Gill on 9/10/17.
-//  Copyright © 2017 Nindi Gill. All rights reserved.
+//  Copyright © 2019 Nindi Gill. All rights reserved.
 //
 
 import Cocoa
@@ -19,17 +19,18 @@ class Document: NSDocument {
   override func makeWindowControllers() {
 
     let storyboard = NSStoryboard(name: "Main", bundle: nil)
+    let identifier = "Document Window Controller"
 
-    guard let windowController = storyboard.instantiateController(withIdentifier: "Document Window Controller") as? NSWindowController else {
+    guard let controller = storyboard.instantiateController(withIdentifier: identifier) as? NSWindowController else {
       return
     }
 
-    guard let viewController = windowController.contentViewController as? ViewController else {
+    guard let viewController = controller.contentViewController as? ViewController else {
       return
     }
 
     viewController.documentObject = DocumentObject(dictionary: dictionary)
-    self.addWindowController(windowController)
+    self.addWindowController(controller)
   }
 
   override func read(from url: URL, ofType typeName: String) throws {

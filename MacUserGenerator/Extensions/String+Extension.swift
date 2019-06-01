@@ -3,7 +3,7 @@
 //  MacUserGenerator
 //
 //  Created by Nindi Gill on 12/10/17.
-//  Copyright © 2017 Nindi Gill. All rights reserved.
+//  Copyright © 2019 Nindi Gill. All rights reserved.
 //
 
 import Cocoa
@@ -102,7 +102,15 @@ extension String {
     let rounds = arc4random_uniform(UInt32(2^32-1))
     var derivedKey = [UInt8](repeating: 0, count: 128)
     let derivedKeyLen = derivedKey.count
-    let status = CCKeyDerivationPBKDF(algorithm, password, passwordLen, salt, saltLen, prf, rounds, &derivedKey, derivedKeyLen)
+    let status = CCKeyDerivationPBKDF(algorithm,
+                                      password,
+                                      passwordLen,
+                                      salt,
+                                      saltLen,
+                                      prf,
+                                      rounds,
+                                      &derivedKey,
+                                      derivedKeyLen)
 
     guard status == 0 else {
       return ""
@@ -111,7 +119,8 @@ extension String {
     let entropyData = Data(bytes: derivedKey, count: derivedKey.count)
 
     let string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
-                 "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" +
+                 "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" " +
+                 "http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" +
                  "<plist version=\"1.0\">" +
                    "<dict>" +
                      "<key>SALTED-SHA512-PBKDF2</key>" +
