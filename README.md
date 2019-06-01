@@ -2,8 +2,11 @@
 
 A Mac utility that assists in automating the creation of macOS User Accounts.
 
-**MacUserGenerator** (MUG) is written from the ground up, with ideas ***heavily*** inspired from [MagerValp's](https://github.com/MagerValp) [CreateUserPkg](https://github.com/MagerValp/CreateUserPkg).
-![Sample User](Readme%20Resources/Sample%20User.png)
+**MacUserGenerator** (MUG) is written from the ground up, with ideas ***heavily*** inspired from [MagerValp's](https://github.com/MagerValp) [CreateUserPkg](https://github.com/MagerValp/CreateUserPkg):
+
+| **Light Appearance**                                         | **Dark Appearance**                                         |
+| :----------------------------------------------------------: | :---------------------------------------------------------: |
+| ![Sample User](Readme%20Resources/Sample%20User%20Light.png) | ![Sample User](Readme%20Resources/Sample%20User%20Dark.png) |
 
 ## Features
 
@@ -11,24 +14,24 @@ A Mac utility that assists in automating the creation of macOS User Accounts.
 *   [x] Export a user account as an **Installer Package (PKG)**.
 *   [x] Ability to Open / Save the user account document / snapshot (MUGshot? 🙃).
 
-|                                   | **Booted Volumes**                  | **Targeted Volumes** |
-| --------------------------------: | :---------------------------------: | :------------------: |
-| **Create User Accounts**          | Yes [*](#-macos-mojave-1014-caveats)| Yes                  |
-| **Set Administrator**             | Yes                                 | Yes                  |
-| **Hide User Account**             | Yes                                 | Yes                  |
-| **Hide User Account Home Folder** | Yes                                 | Yes                  |
-| **Login Automatically**           | Yes                                 | Yes                  |
-| **Skip Setup Assistant**          | Yes                                 | Not Yet (In Testing) |
-| **User Account Picture**          | Yes                                 | Yes                  |
+|                                         | **Booted Volumes**                   | **Targeted Volumes** |
+| --------------------------------------: | :----------------------------------: | :------------------: |
+| **Create User Accounts**                | Yes [*](#-macos-mojave-1014-caveats) | Yes                  |
+| **Set Administrator**                   | Yes                                  | Yes                  |
+| **Hide User Account**                   | Yes                                  | Yes                  |
+| **Hide User Account Home Folder**       | Yes                                  | Yes                  |
+| **Login Automatically**                 | Yes                                  | Yes                  |
+| **Skip Setup Assistant**                | Yes                                  | Not Yet (In Testing) |
+| **Fail if user account already exists** | Yes                                  | Yes                  |
 
 ### * macOS Mojave 10.14 Caveats:
 
 *   Supported when [System Integrity Protection (SIP)](https://support.apple.com/en-us/HT204899) is **disabled**
 *   When SIP is **enabled**, attempting to update the **User ID** and **Home Directory** attributes will result in the following prompts:
 
-    | **Scripts** | **Packages** |
-    | :---------: | :----------: |
-    | ![Mojave Scripts](Readme%20Resources/Mojave%20Scripts.png) | ![Mojave Packages](Readme%20Resources/Mojave%20Packages.png)  |
+    | **Scripts**                                                | **Packages**                                                 |
+    | :--------------------------------------------------------: | :----------------------------------------------------------: |
+    | ![Mojave Scripts](Readme%20Resources/Mojave%20Scripts.png) | ![Mojave Packages](Readme%20Resources/Mojave%20Packages.png) |
 
 ## Under the hood (the nerdy stuff)
 *   Export a user account as a **Python script (PY):**
