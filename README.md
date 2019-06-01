@@ -14,15 +14,15 @@ A Mac utility that assists in automating the creation of macOS User Accounts.
 *   [x] Export a user account as an **Installer Package (PKG)**.
 *   [x] Ability to Open / Save the user account document / snapshot (MUGshot? 🙃).
 
-|                                         | **Booted Volumes**                   | **Targeted Volumes** |
-| --------------------------------------: | :----------------------------------: | :------------------: |
-| **Create User Accounts**                | Yes [*](#-macos-mojave-1014-caveats) | Yes                  |
-| **Set Administrator**                   | Yes                                  | Yes                  |
-| **Hide User Account**                   | Yes                                  | Yes                  |
-| **Hide User Account Home Folder**       | Yes                                  | Yes                  |
-| **Login Automatically**                 | Yes                                  | Yes                  |
-| **Skip Setup Assistant**                | Yes                                  | Not Yet (In Testing) |
-| **Fail if user account already exists** | Yes                                  | Yes                  |
+|                                          | **Booted Volumes**                   | **Targeted Volumes** |
+| ---------------------------------------: | :----------------------------------: | :------------------: |
+| **Create User Accounts**                 | Yes [*](#-macos-mojave-1014-caveats) | Yes                  |
+| **Set Administrator**                    | Yes                                  | Yes                  |
+| **Hide User Account**                    | Yes                                  | Yes                  |
+| **Hide User Account Home Folder**        | Yes                                  | Yes                  |
+| **Login Automatically**                  | Yes                                  | Yes                  |
+| **Skip Setup Assistant**                 | Yes                                  | Yes                  |
+| **Abort if user account already exists** | Yes                                  | Yes                  |
 
 ### * macOS Mojave 10.14 Caveats:
 
