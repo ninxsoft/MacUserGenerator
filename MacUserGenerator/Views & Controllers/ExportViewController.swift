@@ -116,10 +116,6 @@ class ExportViewController: NSViewController {
     validateNextButton()
   }
 
-  func controlTextDidChange(_ obj: Notification) {
-    validateNextButton()
-  }
-
   /**
    Validates the Next button based on the options selected in the Tab Views.
   */
@@ -128,9 +124,9 @@ class ExportViewController: NSViewController {
     switch exportType {
     case .package:
       // if export type is package, ensure package identifier and version fields are not empty
-      let identifierIsNotEmpty = (packageIdentifierTextField?.stringValue.isEmpty)!
-      let versionIsNotEmpty = (packageVersionTextField?.stringValue.isEmpty)!
-      nextButton?.isEnabled = identifierIsNotEmpty && !versionIsNotEmpty
+      let identifierIsNotEmpty = !(packageIdentifierTextField?.stringValue.isEmpty)!
+      let versionIsNotEmpty = !(packageVersionTextField?.stringValue.isEmpty)!
+      nextButton?.isEnabled = identifierIsNotEmpty && versionIsNotEmpty
     case .script:
       nextButton?.isEnabled = true
     }
@@ -161,5 +157,12 @@ class ExportViewController: NSViewController {
 
     let returnCode: NSApplication.ModalResponse = sender == cancelButton ? .cancel : .OK
     view.window?.sheetParent?.endSheet(view.window!, returnCode: returnCode)
+  }
+}
+
+extension ExportViewController: NSTextFieldDelegate {
+
+  func controlTextDidChange(_ obj: Notification) {
+    validateNextButton()
   }
 }
