@@ -346,7 +346,7 @@ def set_autologin(state, kcpassword, name):
     print "User account '" + name + "' set autologin"
 
 
-def create_home_directory(name, home):
+def create_home_directory(name, uid, gid, home):
     """Description"""
 
     if is_booted_volume():
@@ -357,7 +357,41 @@ def create_home_directory(name, home):
                 "' home directory was not created, aborting..."
             exit(1)
     else:
-        print "CREATE HOME DIRECTORY PLIST METHOD"
+        path = get_target() + home
+
+        if not os.path.isdir(home):
+            try:
+                os.mkdir(path, 0755)
+            except OSError:
+                print "User account '" + name + \
+                    "' home directory was not created, aborting..."
+                exit(1)
+
+            os.chown(path, int(uid), int(gid))
+
+        path = get_target() + home + "/Library"
+
+        if not os.path.isdir(home):
+            try:
+                os.mkdir(path, 0700)
+            except OSError:
+                print "User account '" + name + \
+                    "' home directory was not created, aborting..."
+                exit(1)
+
+            os.chown(path, int(uid), int(gid))
+
+        path = get_target() + home + "/Library/Preferences"
+
+        if not os.path.isdir(home):
+            try:
+                os.mkdir(path, 0700)
+            except OSError:
+                print "User account '" + name + \
+                    "' home directory was not created, aborting..."
+                exit(1)
+
+            os.chown(path, int(uid), int(gid))
 
     print "User account '" + name + "' home directory created"
 
@@ -373,8 +407,23 @@ def skip_setup_assistant(state, name, uid, home):
     with open(path, 'a'):
         os.utime(path, None)
 
-    productversion = platform.mac_ver()[0]
-    buildversion = os.popen("sw_vers -buildVersion").read().strip()
+    if is_booted_volume():
+        productversion = platform.mac_ver()[0]
+        buildversion = os.popen("sw_vers -buildVersion").read().strip()
+    else:
+        plist = "/System/Library/CoreServices/SystemVersion.plist"
+        path = get_target() + plist
+
+        with open(path, "rb") as file:
+            filecontents = file.read()
+        arguments = ["plutil", "-convert", "xml1", "-o", "-", "--", "-"]
+        process = subprocess.Popen(arguments,
+                                   stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE)
+        string, error = process.communicate(filecontents)
+        dictionary = plistlib.readPlistFromString(string)
+        productversion = dictionary["ProductVersion"]
+        buildversion = dictionary["ProductBuildVersion"]
 
     dictionary = {
         "DidSeeCloudSetup": True,
@@ -419,7 +468,10 @@ def main():
                   USER_PREFERENCES["kcpassword"],
                   USER_DATA["name"])
 
-    create_home_directory(USER_DATA["name"], USER_DATA["home"])
+    create_home_directory(USER_DATA["name"],
+                          USER_DATA["uid"],
+                          USER_DATA["gid"],
+                          USER_DATA["home"])
 
     skip_setup_assistant(USER_PREFERENCES["skipsetupassistant"],
                          USER_DATA["name"],
