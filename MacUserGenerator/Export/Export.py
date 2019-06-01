@@ -346,8 +346,16 @@ def set_autologin(state, kcpassword, name):
     print "User account '" + name + "' set autologin"
 
 
-def create_home_directory(name, uid, gid, home):
+def skip_setup_assistant(state, name, uid, gid, home):
     """Description"""
+
+    if state != "TRUE":
+        return
+
+    path = get_target() + "/private/var/db/.AppleSetupDone"
+
+    with open(path, 'a'):
+        os.utime(path, None)
 
     if is_booted_volume():
         os.system("createhomedir -c -u " + name)
@@ -356,6 +364,11 @@ def create_home_directory(name, uid, gid, home):
             print "User account '" + name + \
                 "' home directory was not created, aborting..."
             exit(1)
+
+        print "User account '" + name + "' home directory created"
+
+        productversion = platform.mac_ver()[0]
+        buildversion = os.popen("sw_vers -buildVersion").read().strip()
     else:
         path = get_target() + home
 
@@ -393,24 +406,8 @@ def create_home_directory(name, uid, gid, home):
 
             os.chown(path, int(uid), int(gid))
 
-    print "User account '" + name + "' home directory created"
+        print "User account '" + name + "' home directory created"
 
-
-def skip_setup_assistant(state, name, uid, home):
-    """Description"""
-
-    if state != "TRUE":
-        return
-
-    path = get_target() + "/private/var/db/.AppleSetupDone"
-
-    with open(path, 'a'):
-        os.utime(path, None)
-
-    if is_booted_volume():
-        productversion = platform.mac_ver()[0]
-        buildversion = os.popen("sw_vers -buildVersion").read().strip()
-    else:
         plist = "/System/Library/CoreServices/SystemVersion.plist"
         path = get_target() + plist
 
@@ -468,14 +465,10 @@ def main():
                   USER_PREFERENCES["kcpassword"],
                   USER_DATA["name"])
 
-    create_home_directory(USER_DATA["name"],
-                          USER_DATA["uid"],
-                          USER_DATA["gid"],
-                          USER_DATA["home"])
-
     skip_setup_assistant(USER_PREFERENCES["skipsetupassistant"],
                          USER_DATA["name"],
                          USER_DATA["uid"],
+                         USER_DATA["gid"],
                          USER_DATA["home"])
 
     restart_directory_services()
