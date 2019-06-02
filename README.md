@@ -61,6 +61,16 @@ Grab the latest version of MacUserGenerator from the [releases page](https://git
 *   Marcus Ransom ([@marcusransom](https://twitter.com/marcusransom)) for his advice and help with testing.
 
 ## Version History
+*   0.3
+    *   Export script rewritten in **Python**
+        *   Home directory is now created correctly
+        *   Full support for macOS Mojave **10.14**!
+        *   User account creation will abort if **username** or **uid** already exists
+    *   Dark appearance support
+    *   Removed all unnecessary Setup Assistant checkboxes
+    *   Full name conversion to account no longer capitalises
+    *   A new UUID is generated every time the exported package / script is run
+    *   Xcode project updated to support Swift 5.0
 *   0.2
     *   Selecting Administrator for **Account Type** should now work correctly
     *   Added option to skip the **Data & Privacy** screen
