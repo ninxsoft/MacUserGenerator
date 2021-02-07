@@ -82,7 +82,7 @@ Grab the latest version of MacUserGenerator from the [releases page](https://git
     *   Initial release
 
 ## License
-    Copyright © 2019 Nindi Gill
+    Copyright © 2021 Nindi Gill
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
